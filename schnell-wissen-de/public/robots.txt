@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /dashboard-xy934k2_admin/
-
-Sitemap: https://ihrusername.github.io/schnell-wissen-de/sitemap.xml

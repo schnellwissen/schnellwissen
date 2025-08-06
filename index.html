@@ -3,172 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schnell Wissen - Wissensartikel und Tutorials</title>
+    <title>SchnellWissen - Deine Quelle für interessante Artikel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        header { background: #2563eb; color: white; padding: 1rem 0; }
-        .header-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: bold; }
-        nav ul { list-style: none; display: flex; gap: 2rem; }
-        nav a { color: white; text-decoration: none; }
-        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 4rem 0; text-align: center; }
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
-        .hero p { font-size: 1.2rem; margin-bottom: 2rem; }
-        .btn { background: #f59e0b; color: white; padding: 12px 24px; border: none; border-radius: 6px; text-decoration: none; display: inline-block; font-weight: 500; }
-        .features { padding: 4rem 0; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .feature { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .feature h3 { color: #2563eb; margin-bottom: 1rem; }
-        .articles { background: #f8fafc; padding: 4rem 0; }
-        .article-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
-        .article { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .article img { width: 100%; height: 200px; object-fit: cover; }
-        .article-content { padding: 1.5rem; }
-        .article h3 { margin-bottom: 0.5rem; }
-        .article p { color: #666; margin-bottom: 1rem; }
-        .read-more { color: #2563eb; text-decoration: none; font-weight: 500; }
-        footer { background: #1f2937; color: white; padding: 2rem 0; text-align: center; }
-        .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; }
-        .footer-links a { color: white; text-decoration: none; }
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .header-content { flex-direction: column; gap: 1rem; }
-            nav ul { flex-wrap: wrap; justify-content: center; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .article-image {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .rank-badge {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
         }
     </style>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">Schnell Wissen</div>
-                <nav>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#kategorien">Kategorien</a></li>
-                        <li><a href="#artikel">Artikel</a></li>
-                        <li><a href="#ueber-uns">Über uns</a></li>
-                    </ul>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">SchnellWissen</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                    <a href="#kategorien" class="text-gray-700 hover:text-blue-600 font-medium">Kategorien</a>
+                    <a href="#artikel" class="text-gray-700 hover:text-blue-600 font-medium">Artikel</a>
+                    <a href="#dashboard" class="text-gray-700 hover:text-blue-600 font-medium">Dashboard</a>
                 </nav>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Anmelden
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>Schnell Wissen</h1>
-            <p>Deine Quelle für schnelles und effektives Lernen</p>
-            <a href="#artikel" class="btn">Artikel entdecken</a>
-        </div>
-    </section>
-
-    <section class="features">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem;">Warum Schnell Wissen?</h2>
-            <div class="features-grid">
-                <div class="feature">
-                    <h3>📚 Vielfältige Themen</h3>
-                    <p>Von Technologie über Wissenschaft bis hin zu praktischen Alltagstipps - wir decken alle wichtigen Wissensbereiche ab.</p>
-                </div>
-                <div class="feature">
-                    <h3>⚡ Schnell & Präzise</h3>
-                    <p>Unsere Artikel sind so geschrieben, dass Sie das Wichtigste in kürzester Zeit erfassen können.</p>
-                </div>
-                <div class="feature">
-                    <h3>🎯 Praxisnah</h3>
-                    <p>Alle Inhalte sind darauf ausgelegt, dass Sie das Gelernte sofort anwenden können.</p>
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center mb-12 gradient-bg text-white rounded-2xl p-12">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Willkommen bei <span class="text-blue-200">SchnellWissen</span>
+                </h1>
+                <p class="text-xl text-blue-100 max-w-2xl mx-auto mb-8">
+                    Deine tägliche Quelle für interessante Artikel zu Technologie, Wissenschaft, 
+                    Gesundheit und vielem mehr. Schnell informiert, fundiert erklärt.
+                </p>
+                
+                <!-- Search Box -->
+                <div class="max-w-md mx-auto">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Nach Artikeln suchen..." 
+                            class="w-full px-4 py-3 rounded-xl bg-white/10 backdrop-blur-sm text-white placeholder-blue-200 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        >
+                        <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-blue-200 hover:text-white">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="articles" id="artikel">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem;">Beliebte Artikel</h2>
-            <div class="article-grid">
-                <article class="article">
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=200&fit=crop" alt="Technologie" />
-                    <div class="article-content">
-                        <h3>Die Zukunft der Künstlichen Intelligenz</h3>
-                        <p>Entdecken Sie, wie KI unser Leben in den nächsten Jahren verändern wird und welche Chancen sich bieten.</p>
-                        <a href="#" class="read-more">Weiterlesen →</a>
-                    </div>
-                </article>
-                <article class="article">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop" alt="Lernen" />
-                    <div class="article-content">
-                        <h3>Effektive Lernmethoden für Erwachsene</h3>
-                        <p>Wissenschaftlich bewährte Techniken, um auch im Erwachsenenalter erfolgreich neue Fähigkeiten zu erlernen.</p>
-                        <a href="#" class="read-more">Weiterlesen →</a>
-                    </div>
-                </article>
-                <article class="article">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=200&fit=crop" alt="Business" />
-                    <div class="article-content">
-                        <h3>Produktivität im Home Office steigern</h3>
-                        <p>Praktische Tipps und Tools, um von zu Hause aus effizient und fokussiert zu arbeiten.</p>
-                        <a href="#" class="read-more">Weiterlesen →</a>
-                    </div>
-                </article>
-                <article class="article">
-                    <img src="https://images.unsplash.com/photo-1559757148-5c350d0cb0fd?w=400&h=200&fit=crop" alt="Gesundheit" />
-                    <div class="article-content">
-                        <h3>Gesunde Gewohnheiten entwickeln</h3>
-                        <p>Wie Sie nachhaltig positive Veränderungen in Ihrem Alltag etablieren und beibehalten.</p>
-                        <a href="#" class="read-more">Weiterlesen →</a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-3 space-y-12">
+                    <!-- Top 3 Articles -->
+                    <section id="artikel">
+                        <div class="flex items-center mb-6">
+                            <i data-lucide="star" class="w-6 h-6 text-yellow-500 mr-2"></i>
+                            <h2 class="text-2xl font-bold text-gray-900">Top 3 Artikel des Monats</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Article 1 -->
+                            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 card-hover">
+                                <div class="flex items-start space-x-4">
+                                    <div class="rank-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                                    <div class="article-image w-24 h-24 rounded-lg bg-gradient-to-br from-blue-400 to-blue-600"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+                                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Technologie</span>
+                                            <span>•</span>
+                                            <span>5 Min. Lesezeit</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">Die Zukunft der Künstlichen Intelligenz in 2024</h3>
+                                        <p class="text-gray-600 mb-4">Entdecken Sie die neuesten Entwicklungen in der KI-Technologie und wie sie unser Leben verändern wird...</p>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                                <div class="flex items-center">
+                                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
+                                                    <span>2.4k</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i data-lucide="heart" class="w-4 h-4 mr-1"></i>
+                                                    <span>89</span>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Weiterlesen →</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
 
-    <section class="features" id="kategorien">
-        <div class="container">
-            <h2 style="text-align: center; margin-bottom: 2rem;">Kategorien</h2>
-            <div class="features-grid">
-                <div class="feature">
-                    <h3>💻 Technologie</h3>
-                    <p>Die neuesten Trends und Entwicklungen in der Tech-Welt</p>
-                </div>
-                <div class="feature">
-                    <h3>🧠 Wissenschaft</h3>
-                    <p>Faszinierende Entdeckungen und Erkenntnisse aus der Forschung</p>
-                </div>
-                <div class="feature">
-                    <h3>💼 Business</h3>
-                    <p>Strategien und Tipps für beruflichen und unternehmerischen Erfolg</p>
-                </div>
-                <div class="feature">
-                    <h3>🏥 Gesundheit</h3>
-                    <p>Wertvolle Informationen für ein gesundes und ausgeglichenes Leben</p>
-                </div>
-                <div class="feature">
-                    <h3>🎨 Kreativität</h3>
-                    <p>Inspiration und Techniken zur Förderung Ihrer kreativen Fähigkeiten</p>
-                </div>
-                <div class="feature">
-                    <h3>📈 Persönlichkeitsentwicklung</h3>
-                    <p>Wege zur kontinuierlichen Verbesserung und Selbstverwirklichung</p>
-                </div>
-            </div>
-        </div>
-    </section>
+                            <!-- Article 2 -->
+                            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 card-hover">
+                                <div class="flex items-start space-x-4">
+                                    <div class="rank-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                                    <div class="article-image w-24 h-24 rounded-lg bg-gradient-to-br from-green-400 to-green-600"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+                                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">Gesundheit</span>
+                                            <span>•</span>
+                                            <span>7 Min. Lesezeit</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">Gesunde Ernährung im digitalen Zeitalter</h3>
+                                        <p class="text-gray-600 mb-4">Wie Sie trotz Homeoffice und digitalem Stress eine gesunde Ernährung beibehalten können...</p>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                                <div class="flex items-center">
+                                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
+                                                    <span>1.8k</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i data-lucide="heart" class="w-4 h-4 mr-1"></i>
+                                                    <span>76</span>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Weiterlesen →</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
 
-    <footer id="ueber-uns">
-        <div class="container">
-            <div class="footer-links">
-                <a href="#impressum">Impressum</a>
-                <a href="#datenschutz">Datenschutz</a>
-                <a href="#kontakt">Kontakt</a>
+                            <!-- Article 3 -->
+                            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 card-hover">
+                                <div class="flex items-start space-x-4">
+                                    <div class="rank-badge text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                                    <div class="article-image w-24 h-24 rounded-lg bg-gradient-to-br from-purple-400 to-purple-600"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+                                            <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">Wissenschaft</span>
+                                            <span>•</span>
+                                            <span>6 Min. Lesezeit</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">Quantencomputing: Revolution der Rechenleistung</h3>
+                                        <p class="text-gray-600 mb-4">Was Quantencomputer können und wie sie die Zukunft der Technologie beeinflussen werden...</p>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                                <div class="flex items-center">
+                                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i>
+                                                    <span>1.5k</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <i data-lucide="heart" class="w-4 h-4 mr-1"></i>
+                                                    <span>92</span>
+                                                </div>
+                                            </div>
+                                            <a href="#" class="text-blue-600 hover:text-blue-700 font-medium">Weiterlesen →</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+
+                    <!-- Recent Articles -->
+                    <section>
+                        <div class="flex items-center mb-6">
+                            <i data-lucide="clock" class="w-6 h-6 text-blue-500 mr-2"></i>
+                            <h2 class="text-2xl font-bold text-gray-900">Neueste Artikel</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Recent Article Cards -->
+                            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden card-hover">
+                                <div class="article-image h-48 bg-gradient-to-br from-orange-400 to-orange-600"></div>
+                                <div class="p-6">
+                                    <div class="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                                        <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">Business</span>
+                                        <span>•</span>
+                                        <span>4 Min.</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Remote Work: Tipps für mehr Produktivität</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Effektive Strategien für das Arbeiten von zu Hause...</p>
+                                    <a href="#" class="text-blue-600 hover:text-blue-700 font-medium text-sm">Weiterlesen →</a>
+                                </div>
+                            </article>
+
+                            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden card-hover">
+                                <div class="article-image h-48 bg-gradient-to-br from-red-400 to-red-600"></div>
+                                <div class="p-6">
+                                    <div class="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                                        <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full">Lifestyle</span>
+                                        <span>•</span>
+                                        <span>3 Min.</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Minimalismus: Weniger ist mehr</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Wie Sie mit weniger mehr Lebensqualität erreichen...</p>
+                                    <a href="#" class="text-blue-600 hover:text-blue-700 font-medium text-sm">Weiterlesen →</a>
+                                </div>
+                            </article>
+
+                            <article class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden card-hover">
+                                <div class="article-image h-48 bg-gradient-to-br from-indigo-400 to-indigo-600"></div>
+                                <div class="p-6">
+                                    <div class="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                                        <span class="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">Bildung</span>
+                                        <span>•</span>
+                                        <span>8 Min.</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Effektive Lernmethoden für Erwachsene</h3>
+                                    <p class="text-gray-600 text-sm mb-4">Wissenschaftlich bewährte Techniken für lebenslanges Lernen...</p>
+                                    <a href="#" class="text-blue-600 hover:text-blue-700 font-medium text-sm">Weiterlesen →</a>
+                                </div>
+                            </article>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="space-y-8">
+                    <!-- Categories -->
+                    <div id="kategorien" class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Kategorien</h3>
+                        <div class="space-y-3">
+                            <a href="#" class="flex items-center justify-between text-gray-600 hover:text-blue-600 transition">
+                                <div class="flex items-center">
+                                    <i data-lucide="cpu" class="w-4 h-4 mr-2"></i>
+                                    <span>Technologie</span>
+                                </div>
+                                <span class="text-sm bg-gray-100 px-2 py-1 rounded">42</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between text-gray-600 hover:text-blue-600 transition">
+                                <div class="flex items-center">
+                                    <i data-lucide="heart-pulse" class="w-4 h-4 mr-2"></i>
+                                    <span>Gesundheit</span>
+                                </div>
+                                <span class="text-sm bg-gray-100 px-2 py-1 rounded">38</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between text-gray-600 hover:text-blue-600 transition">
+                                <div class="flex items-center">
+                                    <i data-lucide="flask-conical" class="w-4 h-4 mr-2"></i>
+                                    <span>Wissenschaft</span>
+                                </div>
+                                <span class="text-sm bg-gray-100 px-2 py-1 rounded">29</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between text-gray-600 hover:text-blue-600 transition">
+                                <div class="flex items-center">
+                                    <i data-lucide="briefcase" class="w-4 h-4 mr-2"></i>
+                                    <span>Business</span>
+                                </div>
+                                <span class="text-sm bg-gray-100 px-2 py-1 rounded">24</span>
+                            </a>
+                            <a href="#" class="flex items-center justify-between text-gray-600 hover:text-blue-600 transition">
+                                <div class="flex items-center">
+                                    <i data-lucide="palette" class="w-4 h-4 mr-2"></i>
+                                    <span>Lifestyle</span>
+                                </div>
+                                <span class="text-sm bg-gray-100 px-2 py-1 rounded">31</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Trending -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">
+                            <i data-lucide="trending-up" class="w-5 h-5 inline mr-2 text-green-500"></i>
+                            Trending
+                        </h3>
+                        <div class="space-y-4">
+                            <article class="border-b border-gray-100 pb-4 last:border-0">
+                                <h4 class="text-sm font-medium text-gray-900 mb-1">KI-Revolution im Gesundheitswesen</h4>
+                                <p class="text-xs text-gray-500">3.2k Aufrufe • vor 2 Stunden</p>
+                            </article>
+                            <article class="border-b border-gray-100 pb-4 last:border-0">
+                                <h4 class="text-sm font-medium text-gray-900 mb-1">Nachhaltiges Leben: 10 einfache Tipps</h4>
+                                <p class="text-xs text-gray-500">2.8k Aufrufe • vor 4 Stunden</p>
+                            </article>
+                            <article class="border-b border-gray-100 pb-4 last:border-0">
+                                <h4 class="text-sm font-medium text-gray-900 mb-1">Die Zukunft der Mobilität</h4>
+                                <p class="text-xs text-gray-500">2.1k Aufrufe • vor 6 Stunden</p>
+                            </article>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Access -->
+                    <div id="dashboard" class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-sm p-6 text-white">
+                        <h3 class="text-lg font-bold mb-2">Admin Dashboard</h3>
+                        <p class="text-blue-100 text-sm mb-4">Verwalten Sie Artikel, Kategorien und Benutzer</p>
+                        <a href="#admin-login" class="bg-white text-blue-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-50 transition inline-block">
+                            Zum Dashboard
+                        </a>
+                    </div>
+                </aside>
             </div>
-            <p>&copy; 2024 Schnell Wissen. Alle Rechte vorbehalten.</p>
-            <p style="margin-top: 1rem; color: #9ca3af;">Ihre Quelle für schnelles und effektives Lernen</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">SchnellWissen</h3>
+                    <p class="text-gray-400">Deine tägliche Quelle für interessante und fundierte Artikel.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Kategorien</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Technologie</a></li>
+                        <li><a href="#" class="hover:text-white transition">Gesundheit</a></li>
+                        <li><a href="#" class="hover:text-white transition">Wissenschaft</a></li>
+                        <li><a href="#" class="hover:text-white transition">Business</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Rechtliches</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Impressum</a></li>
+                        <li><a href="#" class="hover:text-white transition">Datenschutz</a></li>
+                        <li><a href="#" class="hover:text-white transition">AGB</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Kontakt</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Über uns</a></li>
+                        <li><a href="#" class="hover:text-white transition">Kontakt</a></li>
+                        <li><a href="#" class="hover:text-white transition">Newsletter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 SchnellWissen. Alle Rechte vorbehalten.</p>
+            </div>
         </div>
     </footer>
 
     <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -181,6 +368,22 @@
                     });
                 }
             });
+        });
+
+        // Search functionality
+        document.querySelector('input[placeholder="Nach Artikeln suchen..."]').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value;
+                if (query.trim()) {
+                    alert('Suche nach: ' + query + '\n(Vollständige Suchfunktion in Entwicklung)');
+                }
+            }
+        });
+
+        // Admin Dashboard link
+        document.querySelector('a[href="#admin-login"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Admin-Login wird geladen...\n(Dashboard-Funktionalität verfügbar nach vollständiger Implementierung)');
         });
     </script>
 </body>
