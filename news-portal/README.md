@@ -2,6 +2,46 @@
 
 Ein modernes News-Portal mit Next.js 14 und Supabase.
 
+## Technische Anforderungen
+
+- **Node.js:** v22.17.0 (getestet)
+- **Next.js:** 14.2.5 (fixiert)
+- **React:** 18.3.1
+
+> **Wichtiger Hinweis (Stand 01/2025):** Next.js 15 verursacht unter Windows Compiler-Crashes (Jest worker errors). Daher verwenden wir die stabile Version 14.2.5 mit deaktiviertem SWC-Minifier.
+
+## Bilder in Artikeln
+
+### Unterstützte Bildquellen
+- **Direkte URLs:** Unsplash, Picsum, Placeholder-Services
+- **Supabase Storage:** Upload über das Admin-Interface
+- **Data-URLs:** Base64-encodierte Bilder
+
+### Wichtige Hinweise zu Bildern
+1. **Unsplash-URLs** müssen die Parameter `?w=800&q=80` enthalten (nicht nur die Basis-URL)
+2. **HTML-Sanitization:** Für Admin-Content ist DOMPurify deaktiviert, damit Bilder angezeigt werden
+3. **Next.js Images:** `unoptimized: true` in der Config, um externe Bilder zuzulassen
+
+### Fehlersuche bei nicht angezeigten Bildern
+1. Browser-Konsole öffnen (F12) - Debug-Output zeigt alle gefundenen Bilder
+2. Netzwerk-Tab prüfen: 403/404 bedeutet die Bildquelle blockiert Hotlinking
+3. Alternative Bildquellen verwenden: Picsum.photos oder via.placeholder.com
+
+## Homepage Layout
+
+### Artikel-Cards
+- **Komponente:** `components/ArticleCard.tsx` für einheitliche Darstellung
+- **Bildgrößen:** Desktop: h-48 (≈190px), Mobile: h-32 (≈130px)
+- **Text-Truncation:** 
+  - Titel: max. 2 Zeilen (line-clamp-2)
+  - Excerpt: max. 120 Zeichen aus DB-Feld `excerpt`
+- **Kein HTML-Rendering:** Nur Plain-Text aus DB, keine `dangerouslySetInnerHTML` im Feed
+
+### Meistgelesen Sidebar
+- **Thumbnail:** h-16 w-28 (64x112px) mit object-cover
+- **Kompaktes Layout:** Nummer, Thumbnail und Titel nebeneinander
+- **Fallback-Bild:** Placeholder wenn kein Cover vorhanden
+
 ## Setup
 
 ### 1. ENV-Variablen in Vercel eintragen

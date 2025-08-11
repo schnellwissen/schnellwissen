@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 
 export default async function AdminPage() {
@@ -31,11 +32,11 @@ export default async function AdminPage() {
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-blue-50 p-6 rounded-lg">
+          <Link href="/admin/articles" className="block bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition">
             <h3 className="font-semibold text-lg mb-2">Artikel verwalten</h3>
             <p className="text-gray-600 mb-4">Erstellen, bearbeiten und löschen Sie Artikel</p>
-            <button className="text-blue-600 hover:underline">Artikel verwalten →</button>
-          </div>
+            <span className="text-blue-600 hover:underline">Artikel verwalten →</span>
+          </Link>
           
           <div className="bg-green-50 p-6 rounded-lg">
             <h3 className="font-semibold text-lg mb-2">Kategorien</h3>

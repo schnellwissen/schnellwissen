@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { supabaseServer } from '@/lib/supabase/server';
-import NewForm from './NewForm';
+import ArticleForm from '../ArticleForm';
 
 export default async function NewArticle() {
   const sb = await supabaseServer();
@@ -23,7 +23,7 @@ export default async function NewArticle() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Neuer Artikel</h1>
-      <NewForm categories={cats ?? []} />
+      <ArticleForm categories={cats ?? []} />
     </div>
   );
 }
