@@ -1,7 +1,7 @@
 import { slugify } from '@/lib/slugify';
 
-export const getArticlePath = (cat: string, slug: string) =>
-  `/${slugify(cat)}/${slugify(slug)}`;
+export const getArticlePath = (categorySlug: string, articleSlug: string) =>
+  `/${slugify(categorySlug)}/${slugify(articleSlug)}`;
 
 export function getArticlePathFromArticle(article: any): string {
   if (!article || !article.slug) return '/';

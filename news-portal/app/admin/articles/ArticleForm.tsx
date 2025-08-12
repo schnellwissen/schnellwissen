@@ -21,7 +21,7 @@ export default function ArticleForm({ categories, article }: ArticleFormProps) {
   const [excerpt, setExcerpt] = useState(article?.excerpt || '');
   const [categoryId, setCategoryId] = useState(article?.category_id || '');
   const [coverImageUrl, setCoverImageUrl] = useState(article?.cover_image_url || '');
-  const [content, setContent] = useState(article?.content || '');
+  const [content, setContent] = useState(article?.content_html || article?.html || article?.content || '');
   const [previewImage, setPreviewImage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -69,7 +69,8 @@ export default function ArticleForm({ categories, article }: ArticleFormProps) {
       if (response.ok) {
         router.push('/admin/articles');
       } else {
-        alert('Fehler beim Speichern des Artikels');
+        const errorData = await response.json();
+        alert(errorData.error || 'Fehler beim Speichern des Artikels');
       }
     } catch (error) {
       console.error('Error saving article:', error);

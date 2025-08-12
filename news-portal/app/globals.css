@@ -90,7 +90,7 @@ p {
 }
 
 .btn-ghost {
-  @apply text-primary hover:bg-primary/10 rounded-lg px-4 py-2 transition-all duration-200;
+  @apply text-primary hover:bg-primary hover:bg-opacity-10 rounded-lg px-4 py-2 transition-all duration-200;
 }
 
 /* Link Styles */
@@ -176,7 +176,8 @@ a:hover {
 }
 
 .article-content blockquote {
-  @apply border-l-4 border-primary bg-primary/5 pl-6 py-4 my-8 italic text-text-muted rounded-r-lg;
+  @apply border-l-4 border-primary pl-6 py-4 my-8 italic text-text-muted rounded-r-lg;
+  background-color: rgba(37, 99, 235, 0.05);
 }
 
 .article-content ul, .article-content ol {
@@ -201,15 +202,15 @@ a:hover {
 }
 
 .badge-primary {
-  @apply badge bg-primary/10 text-primary;
+  @apply badge bg-primary bg-opacity-10 text-primary;
 }
 
 .badge-accent {
-  @apply badge bg-accent/10 text-accent;
+  @apply badge bg-accent bg-opacity-10 text-accent;
 }
 
 .badge-warning {
-  @apply badge bg-warning/10 text-warning;
+  @apply badge bg-warning bg-opacity-10 text-warning;
 }
 
 /* Loading Animation */
@@ -245,7 +246,7 @@ a:hover {
 
 /* Glass Effect */
 .glass {
-  @apply backdrop-blur-md bg-white/70 dark:bg-dark-card/70 border border-white/20;
+  @apply backdrop-blur-md bg-white bg-opacity-70 border border-white border-opacity-20;
 }
 
 /* Custom Scrollbar */

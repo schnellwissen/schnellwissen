@@ -99,7 +99,13 @@
       "Bash(start http://localhost:3001/verify-routing)",
       "Bash(start http://localhost:3001/test-slugs)",
       "Bash(git clean:*)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(start http://localhost:3002/dev-css)",
+      "Bash(start http://localhost:3003/dev-css)",
+      "Bash(start http://localhost:3003/test-db)",
+      "Bash(start http://localhost:3003/admin/articles)",
+      "Bash(start http://localhost:3004)",
+      "Bash(start http://localhost:3004/debug-routing)"
     ],
     "deny": []
   }

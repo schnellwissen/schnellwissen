@@ -1,7 +1,10 @@
 import { notFound } from 'next/navigation';
 import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
-import { normalizeSlug } from '@/lib/paths';
+import { slugify } from '@/lib/slugify';
+
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 interface ArticlePageProps {
   params: {
@@ -13,19 +16,21 @@ interface ArticlePageProps {
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const sb = await supabaseServer();
   
-  const normalizedSlug = normalizeSlug(params.slug);
-  const normalizedCategory = normalizeSlug(params.category);
+  // Use slugify for normalization
+  const normalizedSlug = slugify(params.slug);
+  const normalizedCategory = slugify(params.category);
   
+  // Try to get article
   const { data: article, error } = await sb
     .from('articles')
-    .select('id,title,slug,category_slug,cover_image_url,excerpt,content,status')
+    .select('*')
     .eq('category_slug', normalizedCategory)
     .eq('slug', normalizedSlug)
     .eq('status', 'published')
     .single();
 
   if (error || !article) {
-    console.error('Article not found:', error);
+    console.error('DETAIL_NOT_FOUND', { params, normalizedCategory, normalizedSlug, error });
     notFound();
   }
 
@@ -73,6 +78,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <span className="flex items-center">
                 Veröffentlicht
               </span>
+            </div>
           </div>
         </div>
       </header>
@@ -94,8 +100,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <article className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div 
-            className="prose prose-lg max-w-none text-text"
-            dangerouslySetInnerHTML={{ __html: article.content }}
+            className="prose prose-lg prose-slate max-w-none article-content"
+            dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }}
           />
         </div>
       </article>
@@ -136,16 +142,5 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   );
 }
 
-export async function generateStaticParams() {
-  const sb = await supabaseServer();
-  
-  const { data: articles } = await sb
-    .from('articles')
-    .select('slug, category_slug')
-    .eq('status', 'published');
-
-  return articles?.map((article) => ({
-    category: article.category_slug || 'artikel',
-    slug: article.slug,
-  })) || [];
-}
+// Remove generateStaticParams to avoid cookies error in development
+// This function would be used for static generation in production
