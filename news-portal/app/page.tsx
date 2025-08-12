@@ -9,7 +9,7 @@ export default async function HomePage() {
   // Top 3 Artikel nach Views
   const { data: top } = await sb
     .from('articles')
-    .select('title,slug,views,cover_image_url,categories(slug,name)')
+    .select('title,slug,category_slug,views,cover_image_url')
     .eq('status','published')
     .order('views',{ascending:false})
     .limit(3);
@@ -17,7 +17,7 @@ export default async function HomePage() {
   // Featured Artikel (neuester mit cover_image)
   const { data: featured } = await sb
     .from('articles')
-    .select('id,title,slug,excerpt,cover_image_url,published_at,categories(slug,name)')
+    .select('id,title,slug,category_slug,excerpt,cover_image_url,published_at')
     .eq('status','published')
     .not('cover_image_url', 'is', null)
     .order('published_at',{ascending:false})
@@ -26,7 +26,7 @@ export default async function HomePage() {
   // Neueste 12 Artikel
   const { data: latest } = await sb
     .from('articles')
-    .select('id,title,slug,excerpt,cover_image_url,published_at,categories(slug,name)')
+    .select('id,title,slug,category_slug,excerpt,cover_image_url,published_at')
     .eq('status','published')
     .order('published_at',{ascending:false})
     .limit(12);
