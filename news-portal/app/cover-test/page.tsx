@@ -1,3 +1,5 @@
+'use client';
+
 export default function CoverTest() {
   const testImages = [
     'https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg',
