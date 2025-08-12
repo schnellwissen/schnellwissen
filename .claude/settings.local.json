@@ -105,7 +105,9 @@
       "Bash(start http://localhost:3003/test-db)",
       "Bash(start http://localhost:3003/admin/articles)",
       "Bash(start http://localhost:3004)",
-      "Bash(start http://localhost:3004/debug-routing)"
+      "Bash(start http://localhost:3004/debug-routing)",
+      "Bash(git tag:*)",
+      "Bash(start http://localhost:3004/admin/articles)"
     ],
     "deny": []
   }

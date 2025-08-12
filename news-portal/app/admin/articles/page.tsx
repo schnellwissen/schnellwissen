@@ -118,7 +118,7 @@ export default async function ArticlesListPage() {
                   >
                     Bearbeiten
                   </Link>
-                  <DeleteButton id={article.id} />
+                  <DeleteButton id={article.id} title={article.title} />
                 </td>
               </tr>
             ))}
