@@ -1,69 +1,96 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { slugify } from '@/lib/slugify';
+import { createServerClient } from '@supabase/ssr';
 
-export function middleware(req: NextRequest) {
+// Protected routes that require authentication
+const PROTECTED_PATHS = [
+  '/admin',
+  '/konto',
+  '/leseliste',
+];
+
+// Auth routes that should redirect if already logged in
+const AUTH_PATHS = [
+  '/login',
+  '/register',
+];
+
+export async function middleware(req: NextRequest) {
   const url = new URL(req.url);
   const pathname = url.pathname;
   
-  // Skip API routes, static files, and special paths
+  // Skip static files and internal routes
   if (
-    pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
     pathname.startsWith('/favicon') ||
-    pathname.includes('.') // files with extensions
+    pathname.includes('.')
   ) {
     return NextResponse.next();
   }
   
-  // Canonical Redirects für Artikel-URLs
-  const articleMatch = pathname.match(/^\/([^\/]+)\/([^\/]+)\/?$/);
-  if (articleMatch) {
-    const [, rawCat, rawSlug] = articleMatch;
-    // Skip if it's an admin or special route
-    if (rawCat === 'admin' || rawCat === 'login' || rawCat === 'test-' || rawCat.startsWith('test-')) {
-      return NextResponse.next();
-    }
-    
-    const cat = slugify(decodeURIComponent(rawCat || ''));
-    const slug = slugify(decodeURIComponent(rawSlug || ''));
-    
-    const canonical = `/${cat}/${slug}`;
-    if (canonical !== pathname) {
-      url.pathname = canonical;
-      // 308 Permanent Redirect für SEO
-      return NextResponse.redirect(url, 308);
-    }
-  }
+  // Create response that will be modified
+  let response = NextResponse.next();
   
-  const host = req.headers.get('x-forwarded-host') || req.headers.get('host') || '';
-  const sub = host.split('.')[0];
-  const res = NextResponse.next();
-  
-  if (sub && sub !== 'localhost') {
-    res.headers.set('x-subdomain', sub);
-  }
-  
-  // Add Content Security Policy for images
-  // Allow images from self, https, and data URLs
-  res.headers.set(
-    'Content-Security-Policy',
-    "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "img-src 'self' https: data: blob:; " +
-    "font-src 'self' data:; " +
-    "connect-src 'self' https:; " +
-    "frame-ancestors 'none'; " +
-    "base-uri 'self'; " +
-    "form-action 'self';"
+  // Check if path requires protection
+  const isProtectedPath = PROTECTED_PATHS.some(path => 
+    pathname === path || pathname.startsWith(path + '/')
   );
   
-  // Additional security headers
-  res.headers.set('X-Content-Type-Options', 'nosniff');
-  res.headers.set('X-Frame-Options', 'DENY');
-  res.headers.set('X-XSS-Protection', '1; mode=block');
-  res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  const isAuthPath = AUTH_PATHS.some(path => 
+    pathname === path || pathname.startsWith(path + '/')
+  );
   
-  return res;
+  // Only check auth for protected or auth routes
+  if (isProtectedPath || isAuthPath) {
+    // Create Supabase client
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return req.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              req.cookies.set(name, value);
+              response.cookies.set(name, value, options);
+            });
+          },
+        },
+      }
+    );
+    
+    // Check authentication
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Handle protected routes
+    if (isProtectedPath && !user) {
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('redirectTo', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    
+    // Handle auth routes - redirect if already logged in
+    // Skip redirect if signout parameter is present (user just logged out)
+    if (isAuthPath && user && !url.searchParams.has('signout')) {
+      const redirectTo = url.searchParams.get('redirectTo') || '/';
+      return NextResponse.redirect(new URL(redirectTo, req.url));
+    }
+  }
+  
+  return response;
 }
+
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+};

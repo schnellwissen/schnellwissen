@@ -28,12 +28,14 @@ export default async function ArticlesListPage() {
       id, 
       title, 
       slug, 
+      category_slug,
       status, 
       views, 
       published_at,
       cover_image_url,
       categories (
-        name
+        name,
+        slug
       )
     `)
     .order('published_at', { ascending: false });
@@ -86,7 +88,7 @@ export default async function ArticlesListPage() {
                         className="h-10 w-10 object-cover rounded"
                       />
                     )}
-                    <Link href={`/${article.slug}`} className="text-blue-600 hover:underline">
+                    <Link href={`/${article.category_slug || article.categories?.[0]?.slug || 'uncategorized'}/${article.slug}`} className="text-blue-600 hover:underline">
                       {article.title}
                     </Link>
                   </div>

@@ -12,13 +12,18 @@
   --card: #FFFFFF;
   --text: #1F2937;
   --text-muted: #6B7280;
+  --border: #E5E7EB;
 }
 
 .dark {
   --bg: #0F172A;
   --card: #1E293B;
-  --text: #E2E8F0;
-  --text-muted: #94A3B8;
+  --text: #F1F5F9;
+  --text-muted: #CBD5E1;
+  --border: #334155;
+  --primary: #60A5FA;
+  --primary-light: #93C5FD;
+  --primary-dark: #3B82F6;
 }
 
 @theme inline {
@@ -46,6 +51,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
 }
 
 /* Typography */
@@ -83,14 +89,17 @@ p {
 /* Button Styles */
 .btn-primary {
   @apply bg-primary text-white hover:bg-primary-dark rounded-lg px-6 py-3 shadow-md hover:shadow-lg transition-all duration-200 font-medium;
+  @apply dark:bg-blue-600 dark:hover:bg-blue-700;
 }
 
 .btn-secondary {
   @apply bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg px-6 py-3 transition-all duration-200 font-medium;
+  @apply dark:bg-gray-800 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-600 dark:hover:text-white;
 }
 
 .btn-ghost {
   @apply text-primary hover:bg-primary hover:bg-opacity-10 rounded-lg px-4 py-2 transition-all duration-200;
+  @apply dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:bg-opacity-30;
 }
 
 /* Link Styles */
@@ -111,10 +120,12 @@ a:hover {
 /* Card Styles */
 .card {
   @apply bg-card rounded-xl shadow-card hover:shadow-card-hover transition-all duration-300 overflow-hidden;
+  @apply dark:bg-gray-800 dark:shadow-none dark:ring-1 dark:ring-gray-700;
 }
 
 .card-bordered {
   @apply card border border-gray-100;
+  @apply dark:border-gray-700;
 }
 
 /* Container */
@@ -189,7 +200,7 @@ a:hover {
 }
 
 .article-content code {
-  @apply bg-gray-100 text-primary px-2 py-1 rounded text-sm;
+  @apply bg-gray-100 dark:bg-gray-800 text-primary px-2 py-1 rounded text-sm;
 }
 
 .article-content pre {
@@ -202,7 +213,7 @@ a:hover {
 }
 
 .badge-primary {
-  @apply badge bg-primary bg-opacity-10 text-primary;
+  @apply badge bg-primary text-white;
 }
 
 .badge-accent {
@@ -290,5 +301,72 @@ input:focus, textarea:focus, select:focus {
 @media print {
   .no-print {
     display: none !important;
+  }
+}
+
+/* Dark Mode Enhanced Styles */
+@layer utilities {
+  /* Ensure text is always readable */
+  .dark h1, 
+  .dark h2, 
+  .dark h3, 
+  .dark h4, 
+  .dark h5, 
+  .dark h6 {
+    @apply text-gray-100;
+  }
+  
+  .dark p,
+  .dark span,
+  .dark div {
+    color: var(--text);
+  }
+  
+  .dark .text-gray-600 {
+    @apply text-gray-400;
+  }
+  
+  .dark .text-gray-700 {
+    @apply text-gray-300;
+  }
+  
+  .dark .text-gray-800 {
+    @apply text-gray-200;
+  }
+  
+  .dark .text-gray-900 {
+    @apply text-gray-100;
+  }
+  
+  .dark .bg-white {
+    @apply bg-gray-900;
+  }
+  
+  .dark .bg-gray-50 {
+    @apply bg-gray-800;
+  }
+  
+  .dark .bg-gray-100 {
+    @apply bg-gray-800;
+  }
+  
+  .dark .border-gray-200 {
+    @apply border-gray-700;
+  }
+  
+  .dark .border-gray-300 {
+    @apply border-gray-600;
+  }
+  
+  /* Fix input fields in dark mode */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply bg-gray-800 text-gray-100 border-gray-600;
+  }
+  
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    @apply text-gray-500;
   }
 }

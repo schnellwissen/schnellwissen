@@ -47,11 +47,15 @@ export default function ArticleForm({ categories, article }: ArticleFormProps) {
     setIsLoading(true);
 
     try {
+      // Find the selected category's slug
+      const selectedCategory = categories.find(cat => cat.id === categoryId);
+      
       const articleData = {
         title,
         slug,
         excerpt,
         category_id: categoryId,
+        category_slug: selectedCategory?.slug,
         cover_image_url: coverImageUrl,
         content,
         status: 'published'

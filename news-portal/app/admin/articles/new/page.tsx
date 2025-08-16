@@ -19,7 +19,7 @@ export default async function NewArticle() {
     
   if (!prof?.is_admin) redirect('/');
 
-  const { data: cats } = await sb.from('categories').select('id,name');
+  const { data: cats } = await sb.from('categories').select('id,name,slug');
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Neuer Artikel</h1>

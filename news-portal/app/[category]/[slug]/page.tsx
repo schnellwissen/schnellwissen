@@ -2,6 +2,12 @@ import { notFound } from 'next/navigation';
 import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { slugify } from '@/lib/slugify';
+import ArticleViewTracker from './ArticleViewTracker';
+import ShareBar from '@/components/ShareBar';
+import ArticleMeta from '@/components/ArticleMeta';
+import RelatedSidebar from '@/components/RelatedSidebar';
+import BookmarkButton from '@/components/BookmarkButton';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 export const dynamicParams = true;
@@ -13,6 +19,63 @@ interface ArticlePageProps {
   };
 }
 
+export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
+  const sb = await supabaseServer();
+  
+  const normalizedSlug = slugify(params.slug);
+  const normalizedCategory = slugify(params.category);
+  
+  const { data: article } = await sb
+    .from('articles')
+    .select('*')
+    .eq('category_slug', normalizedCategory)
+    .eq('slug', normalizedSlug)
+    .eq('status', 'published')
+    .single();
+
+  if (!article) {
+    return {
+      title: 'Artikel nicht gefunden',
+      description: 'Der angeforderte Artikel konnte nicht gefunden werden.',
+    };
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://schnell-wissen.de';
+  const url = `${siteUrl}/${article.category_slug}/${article.slug}`;
+  const imageUrl = article.cover_image_url || `${siteUrl}/default-og-image.jpg`;
+
+  return {
+    title: article.title,
+    description: article.excerpt || article.title,
+    alternates: { 
+      canonical: url 
+    },
+    openGraph: {
+      title: article.title,
+      description: article.excerpt || article.title,
+      url,
+      type: 'article',
+      publishedTime: article.published_at,
+      authors: article.author ? [article.author] : undefined,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+      siteName: 'Schnell Wissen',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.excerpt || article.title,
+      images: [imageUrl],
+    },
+  };
+}
+
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const sb = await supabaseServer();
   
@@ -20,10 +83,18 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const normalizedSlug = slugify(params.slug);
   const normalizedCategory = slugify(params.category);
   
-  // Try to get article
+  // Try to get article with author info
   const { data: article, error } = await sb
     .from('articles')
-    .select('*')
+    .select(`
+      *,
+      authors (
+        id,
+        name,
+        image_path,
+        bio
+      )
+    `)
     .eq('category_slug', normalizedCategory)
     .eq('slug', normalizedSlug)
     .eq('status', 'published')
@@ -41,70 +112,179 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     .eq('slug', article.category_slug)
     .single();
 
+  // Get consistent view counts from unified source
+  const { data: viewCounts } = await sb
+    .rpc('get_article_views', { p_article_id: article.id });
+
+  const totalViews = viewCounts?.[0]?.views_total || article.views || 0;
+  const views30d = viewCounts?.[0]?.views_30d || 0;
+
+  // Fetch related articles with robust error handling
+  let relatedArticles = [];
+  try {
+    // Use internal API call for server-side fetching
+    const { data: relatedData, error: relatedError } = await sb
+      .rpc('related_articles', {
+        article_id: article.id,
+        max_results: 3
+      });
+    
+    if (!relatedError && relatedData) {
+      relatedArticles = relatedData.slice(0, 3);
+    } else {
+      // Fallback: Get articles from same category
+      const { data: categoryArticles } = await sb
+        .from('articles')
+        .select('id, slug, title, cover_image_url, category_slug')
+        .eq('category_slug', article.category_slug)
+        .neq('id', article.id)
+        .eq('status', 'published')
+        .order('published_at', { ascending: false })
+        .limit(3);
+      
+      relatedArticles = categoryArticles || [];
+    }
+  } catch (error) {
+    console.error('Failed to fetch related articles:', error);
+    relatedArticles = [];
+  }
+
   return (
-    <div className="min-h-screen bg-bg">
+    <main className="min-h-screen bg-bg">
+      <ArticleViewTracker articleId={article.id} />
+      
       {/* Navigation Breadcrumb */}
-      <div className="container mx-auto px-4 py-4">
-        <nav className="flex items-center space-x-2 text-sm text-text-muted">
-          <Link href="/" className="hover:text-primary">Home</Link>
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-4">
+        <nav className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+          <Link href="/" className="hover:text-primary dark:hover:text-blue-400">Home</Link>
           <span>/</span>
-          <Link href={`/kategorie/${article.category_slug}`} className="hover:text-primary">
+          <Link href={`/kategorie/${article.category_slug}`} className="hover:text-primary dark:hover:text-blue-400">
             {category?.name || article.category_slug}
           </Link>
           <span>/</span>
-          <span className="text-text">{article.title}</span>
+          <span className="text-gray-900 dark:text-gray-100 truncate">{article.title}</span>
         </nav>
       </div>
 
-      {/* Article Header */}
-      <header className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      {/* STAGE - Cover und Header */}
+      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Cover Image */}
+        {article.cover_image_url && (
+          <div className="pt-6">
+            <img 
+              src={`/api/img?u=${encodeURIComponent(article.cover_image_url)}&kind=cover`}
+              alt={article.title}
+              className="w-full rounded-2xl object-cover shadow-sm ring-1 ring-gray-200 dark:ring-gray-700"
+              style={{ maxHeight: '500px', objectFit: 'cover' }}
+            />
+          </div>
+        )}
+
+        {/* HEADLINE + EXCERPT + META zentriert */}
+        <header className="mx-auto mt-8 max-w-3xl">
           <div className="mb-4">
-            <span className="badge-primary">{category?.name || article.category_slug}</span>
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+              {category?.name || article.category_slug}
+            </span>
           </div>
           
-          <h1 className="text-3xl md:text-5xl font-bold text-text mb-6 leading-tight">
+          <h1 className="text-3xl font-extrabold leading-tight text-gray-900 dark:text-gray-100 sm:text-4xl">
             {article.title}
           </h1>
           
           {article.excerpt && (
-            <p className="text-xl text-text-muted mb-6">
+            <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
               {article.excerpt}
             </p>
           )}
           
-          <div className="flex items-center justify-between text-sm text-text-muted border-y border-gray-200 py-4 mb-8">
-            <div className="flex items-center space-x-4">
-              <span className="flex items-center">
-                Veröffentlicht
-              </span>
+          <div className="mt-4">
+            <ArticleMeta
+              date={article.published_at ? new Date(article.published_at).toLocaleDateString('de-DE') : ''}
+              viewsLabel={`${views30d.toLocaleString('de-DE')} Aufrufe (30 Tage)`}
+              author={article.authors ? {
+                name: article.authors.name,
+                image: article.authors.image_path
+              } : undefined}
+            />
+          </div>
+          
+          {/* Bookmark Button */}
+          <div className="mt-6">
+            <BookmarkButton articleId={article.id} showText={true} />
+          </div>
+        </header>
+      </section>
+
+      {/* CONTENT + SIDEBAR */}
+      <section className="mx-auto mt-10 w-full px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1600px' }}>
+        <div className="relative flex justify-center">
+          {/* TEXTSPALTE - zentriert */}
+          <div className="w-full max-w-3xl">
+            <article className="prose dark:prose-invert prose-slate dark:prose-gray prose-p:leading-relaxed prose-headings:font-extrabold prose-a:text-primary max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }} />
+            </article>
+          </div>
+
+          {/* SIDEBAR (absolut positioniert ganz rechts) */}
+          <div className="hidden xl:block absolute right-0 top-0 w-52">
+            <div className="sticky top-24">
+              {relatedArticles && relatedArticles.length > 0 ? (
+                <RelatedSidebar articles={relatedArticles} />
+              ) : (
+                <div className="rounded-lg bg-card p-3 shadow-sm ring-1 ring-gray-200 dark:ring-gray-700">
+                  <h3 className="mb-2 text-sm font-semibold text-text">
+                    Das könnte Sie auch interessieren
+                  </h3>
+                  <p className="text-xs text-text-muted">Keine verwandten Artikel gefunden.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Cover Image */}
-      {article.cover_image_url && (
-        <div className="container mx-auto px-4 mb-8">
-          <div className="max-w-4xl mx-auto">
-            <img 
-              src={`/api/img?u=${encodeURIComponent(article.cover_image_url)}&kind=cover`}
-              alt={article.title}
-              className="w-full rounded-xl shadow-soft"
-            />
-          </div>
-        </div>
-      )}
+      {/* Mobile Sidebar - nur auf kleinen Bildschirmen */}
+      <section className="lg:hidden mx-auto mt-8 w-full max-w-3xl px-4 sm:px-6">
+        {relatedArticles && relatedArticles.length > 0 && (
+          <RelatedSidebar articles={relatedArticles} />
+        )}
+      </section>
 
-      {/* Article Content */}
-      <article className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div 
-            className="prose prose-lg prose-slate max-w-none article-content"
-            dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }}
-          />
-        </div>
-      </article>
+      {/* Schema.org JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": article.title,
+            "description": article.excerpt,
+            "author": article.authors ? {
+              "@type": "Person",
+              "name": article.authors.name
+            } : {
+              "@type": "Organization",
+              "name": "Schnell Wissen Redaktion"
+            },
+            "datePublished": article.published_at,
+            "dateModified": article.updated_at || article.published_at,
+            "image": article.cover_image_url,
+            "publisher": {
+              "@type": "Organization",
+              "name": "Schnell Wissen",
+              "logo": {
+                "@type": "ImageObject",
+                "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://schnell-wissen.de'}/logo.png`
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://schnell-wissen.de'}/${article.category_slug}/${article.slug}`
+            }
+          })
+        }}
+      />
 
       {/* Article Footer */}
       <footer className="container mx-auto px-4 py-12">
@@ -121,24 +301,15 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 Zurück zur Startseite
               </Link>
               
-              <div className="flex items-center space-x-4">
-                <span className="text-text-muted text-sm">Artikel teilen:</span>
-                <button className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                  </svg>
-                </button>
-                <button className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                  </svg>
-                </button>
-              </div>
+              <ShareBar 
+                path={`/${article.category_slug}/${article.slug}`} 
+                title={article.title} 
+              />
             </div>
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 }
 

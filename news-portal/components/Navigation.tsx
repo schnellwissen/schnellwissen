@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { supabaseBrowser } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
+import SearchBox from '@/components/SearchBox';
 
 export default function Navigation() {
   const [user, setUser] = useState<User | null>(null);
@@ -55,48 +56,32 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-blue-600">
-            News Portal
-          </Link>
-
-          {/* Navigation Items */}
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="text-gray-700 hover:text-blue-600">
-              Home
-            </Link>
-            
-            {user ? (
-              <>
-                {isAdmin && (
-                  <>
-                    <Link href="/admin" className="text-gray-700 hover:text-blue-600">
-                      Admin
-                    </Link>
-                    <span className="bg-green-500 text-white px-2 py-1 rounded text-sm">
-                      Admin
-                    </span>
-                  </>
-                )}
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/login"
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-              >
-                Login
-              </Link>
-            )}
+    <nav className="flex items-center flex-1">
+      <div className="flex items-center gap-6 flex-1">
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2 text-2xl font-bold text-primary dark:text-blue-400">
+          <div className="w-10 h-10 bg-primary dark:bg-blue-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xl">SW</span>
           </div>
+          <span className="hidden sm:inline">Schnell Wissen</span>
+        </Link>
+
+        {/* Search Box */}
+        <div className="flex-1 max-w-xl mx-4">
+          <SearchBox />
+        </div>
+
+        {/* Navigation Items */}
+        <div className="flex items-center space-x-2">
+          <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-blue-900/20 transition-all">
+            Startseite
+          </Link>
+          
+          {isAdmin && (
+            <Link href="/admin" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-blue-900/20 transition-all">
+              Admin
+            </Link>
+          )}
         </div>
       </div>
     </nav>

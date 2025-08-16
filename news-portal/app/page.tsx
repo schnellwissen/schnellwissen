@@ -2,34 +2,110 @@ import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import ArticleCard from '@/components/ArticleCard';
 import { getArticlePathFromArticle } from '@/lib/paths';
+import FooterConsentLink from '@/components/consent/FooterConsentLink';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function HomePage() {
   const sb = await supabaseServer();
   
-  // Top 3 Artikel nach Views
-  const { data: top } = await sb
-    .from('articles')
-    .select('title,slug,category_slug,views,cover_image_url')
-    .eq('status','published')
-    .order('views',{ascending:false})
-    .limit(3);
+  // Top 6 meistgelesene Artikel (30 Tage) - konsistente Metrik
+  const { data: topArticleIds } = await sb
+    .rpc('get_top_articles_by_views_30d', { p_limit: 6 });
 
-  // Featured Artikel (neuester mit cover_image)
+  let mostRead = null;
+  if (topArticleIds && topArticleIds.length > 0) {
+    // Get full article data for top articles
+    const { data } = await sb
+      .from('articles')
+      .select('id,title,slug,category_slug,excerpt,cover_image_url,published_at')
+      .in('id', topArticleIds.map((a: any) => a.article_id))
+      .eq('status', 'published');
+    
+    // Sort by the order from the RPC function and add views_30d
+    if (data) {
+      mostRead = topArticleIds.map((top: any) => {
+        const article = data.find(a => a.id === top.article_id);
+        return article ? { ...article, views_30d: top.views_30d } : null;
+      }).filter(Boolean);
+    }
+  }
+
+  // Fallback: get articles with their 30-day views and authors
+  if (!mostRead || mostRead.length === 0) {
+    const { data: articles } = await sb
+      .from('articles')
+      .select(`
+        id,title,slug,category_slug,excerpt,cover_image_url,published_at,
+        authors (
+          name,
+          image_path
+        )
+      `)
+      .eq('status','published')
+      .limit(6);
+    
+    // Add 30-day views to each article
+    if (articles) {
+      const articlesWithViews = await Promise.all(
+        articles.map(async (article) => {
+          const { data: viewCounts } = await sb
+            .rpc('get_article_views', { p_article_id: article.id });
+          return {
+            ...article,
+            views_30d: viewCounts?.[0]?.views_30d || 0
+          };
+        })
+      );
+      mostRead = articlesWithViews.sort((a, b) => b.views_30d - a.views_30d);
+    }
+  }
+
+  // Featured Artikel (neuester mit cover_image) mit Autor
   const { data: featured } = await sb
     .from('articles')
-    .select('id,title,slug,category_slug,excerpt,cover_image_url,published_at')
+    .select(`
+      id,title,slug,category_slug,excerpt,cover_image_url,published_at,
+      authors (
+        name,
+        image_path
+      )
+    `)
     .eq('status','published')
     .not('cover_image_url', 'is', null)
     .order('published_at',{ascending:false})
     .limit(1);
 
-  // Neueste 12 Artikel
-  const { data: latest } = await sb
+  // Neueste 6 Artikel mit 30-Tage Views und Autoren
+  const { data: latestArticles } = await sb
     .from('articles')
-    .select('id,title,slug,category_slug,excerpt,cover_image_url,published_at')
+    .select(`
+      id,title,slug,category_slug,excerpt,cover_image_url,published_at,
+      authors (
+        name,
+        image_path
+      )
+    `)
     .eq('status','published')
     .order('published_at',{ascending:false})
-    .limit(12);
+    .limit(6);
+
+  // Add 30-day views to latest articles
+  let latest = latestArticles;
+  if (latestArticles) {
+    const articlesWithViews = await Promise.all(
+      latestArticles.map(async (article) => {
+        const { data: viewCounts } = await sb
+          .rpc('get_article_views', { p_article_id: article.id });
+        return {
+          ...article,
+          views_30d: viewCounts?.[0]?.views_30d || 0
+        };
+      })
+    );
+    latest = articlesWithViews;
+  }
 
   return (
     <div className="min-h-screen bg-bg">
@@ -42,11 +118,14 @@ export default async function HomePage() {
           <p className="text-lg md:text-xl max-w-2xl mb-8 opacity-90">
             Expertenartikel zu Gesundheit, Finanzen, Technologie und mehr.
           </p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-xl">
+          <form action="/suche" method="get" className="flex flex-col sm:flex-row gap-3 max-w-xl">
             <input 
               type="search"
+              name="q"
               className="flex-1 rounded-lg px-5 py-3 text-text placeholder:text-text-muted focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
               placeholder="Artikel suchen …" 
+              minLength={2}
+              required
             />
             <button type="submit" className="bg-white text-primary hover:bg-gray-100 font-semibold rounded-lg px-8 py-3 transition-all shadow-md hover:shadow-lg">
               Suchen
@@ -63,43 +142,31 @@ export default async function HomePage() {
           
           {/* Main Feed */}
           <div className="xl:col-span-3">
-            {/* Featured Article */}
-            {featured && featured[0] && (
+            {/* Meistgelesene Artikel - identisch zu Neueste Artikel */}
+            {mostRead && mostRead.length > 0 && (
               <div className="mb-10">
-                <h2 className="text-2xl font-bold text-text mb-6 tracking-tight">Featured Artikel</h2>
-                <Link href={getArticlePathFromArticle(featured[0])} className="group block card overflow-hidden">
-                  <div className="md:flex">
-                    <div className="md:w-2/5 h-64 md:h-auto relative overflow-hidden">
-                      <img 
-                        src={featured[0].cover_image_url || 'https://via.placeholder.com/600x400'}
-                        alt={featured[0].title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                    </div>
-                    <div className="md:w-3/5 p-6 md:p-8">
-                      <span className="badge-primary mb-3">Featured</span>
-                      <h3 className="text-2xl font-bold text-text mb-3 group-hover:text-primary transition-colors">
-                        {featured[0].title}
-                      </h3>
-                      {featured[0].excerpt && (
-                        <p className="text-text-muted line-clamp-3 mb-4">
-                          {featured[0].excerpt}
-                        </p>
-                      )}
-                      <div className="flex items-center text-sm text-text-muted">
-                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {new Date(featured[0].published_at).toLocaleDateString('de-DE', {
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric'
-                        })}
-                      </div>
-                    </div>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-text tracking-tight">Meistgelesene Artikel</h2>
+                  <div className="flex items-center gap-2 text-sm text-text-muted">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                    <span>Letzte 30 Tage</span>
                   </div>
-                </Link>
+                </div>
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                  {mostRead.map((article, idx) => (
+                    <div key={article.id} className="relative">
+                      {/* Kleines Rank-Badge als Overlay */}
+                      {idx < 3 && (
+                        <div className="absolute top-4 left-4 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                          #{idx + 1}
+                        </div>
+                      )}
+                      <ArticleCard a={article} />
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -140,39 +207,6 @@ export default async function HomePage() {
 
           {/* Sidebar */}
           <div className="xl:col-span-1 space-y-6">
-            {/* Top Articles */}
-            {top && top.length > 0 && (
-              <section className="card p-6">
-                <h3 className="text-lg font-bold text-text mb-5 flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-warning" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
-                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
-                  </svg>
-                  Meistgelesen
-                </h3>
-                <ol className="space-y-4">
-                  {top.map((article, idx) => (
-                    <li key={article.slug} className="flex items-start gap-3">
-                      <span className="text-2xl font-bold text-primary-light w-8">
-                        {idx + 1}.
-                      </span>
-                      <div className="flex-1">
-                        <Link 
-                          href={getArticlePathFromArticle(article)} 
-                          className="font-medium text-text hover:text-primary transition-colors line-clamp-2"
-                        >
-                          {article.title}
-                        </Link>
-                        <div className="text-sm text-text-muted mt-1">
-                          {article.views.toLocaleString('de-DE')} Aufrufe
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ol>
-              </section>
-            )}
-
             {/* Categories */}
             <section className="card p-6">
               <h3 className="text-lg font-bold text-text mb-5 flex items-center">
@@ -187,7 +221,7 @@ export default async function HomePage() {
                   <Link
                     key={cat}
                     href={`/kategorie/${cat.toLowerCase()}`}
-                    className="py-2 px-3 text-sm rounded-lg bg-gray-50 text-text hover:bg-primary hover:text-white transition-all duration-200 text-center font-medium"
+                    className="py-2 px-3 text-sm rounded-lg bg-gray-50 dark:bg-gray-700 text-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-200 text-center font-medium"
                   >
                     {cat}
                   </Link>
@@ -222,7 +256,7 @@ export default async function HomePage() {
             <section className="card p-6">
               <h3 className="text-lg font-bold text-text mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><Link href="/uber-uns" className="text-text-muted hover:text-primary text-sm">Über uns</Link></li>
+                <li><Link href="/ueber-uns" className="text-text-muted hover:text-primary text-sm">Über uns</Link></li>
                 <li><Link href="/kontakt" className="text-text-muted hover:text-primary text-sm">Kontakt</Link></li>
                 <li><Link href="/impressum" className="text-text-muted hover:text-primary text-sm">Impressum</Link></li>
                 <li><Link href="/datenschutz" className="text-text-muted hover:text-primary text-sm">Datenschutz</Link></li>
@@ -236,7 +270,16 @@ export default async function HomePage() {
       <footer className="mt-16 border-t border-gray-200 bg-white">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center text-sm text-text-muted">
-            © 2024 WissensPortal. Alle Rechte vorbehalten.
+            <div className="mb-2">
+              © 2024 SchnellWissen. Alle Rechte vorbehalten.
+            </div>
+            <div className="flex justify-center items-center gap-4">
+              <Link href="/impressum" className="hover:text-primary transition-colors">Impressum</Link>
+              <span className="text-gray-400">•</span>
+              <Link href="/datenschutz" className="hover:text-primary transition-colors">Datenschutz</Link>
+              <span className="text-gray-400">•</span>
+              <FooterConsentLink />
+            </div>
           </div>
         </div>
       </footer>

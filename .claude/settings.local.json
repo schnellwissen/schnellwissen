@@ -107,8 +107,29 @@
       "Bash(start http://localhost:3004)",
       "Bash(start http://localhost:3004/debug-routing)",
       "Bash(git tag:*)",
-      "Bash(start http://localhost:3004/admin/articles)"
+      "Bash(start http://localhost:3004/admin/articles)",
+      "Bash(start http://localhost:3000/fix-category-slugs)",
+      "Bash(start http://localhost:3005/fix-category-slugs)",
+      "Bash(start http://localhost:3005/debug-routing)",
+      "Bash(start http://localhost:3005/admin/articles)",
+      "Bash(start http://localhost:3006)",
+      "Bash(start http://localhost:3006/login)",
+      "Bash(start http://localhost:3007/login)",
+      "Bash(start http://localhost:3007/auth/register)",
+      "Bash(start http://localhost:3000/kategorie/finanzen)",
+      "Bash(npx supabase:*)",
+      "Bash(start http://localhost:3000/test-search)",
+      "Bash(start http://localhost:3000/suche?q=ETF)",
+      "Bash(start https://uabmwhtoimelqpuhyluz.supabase.co/dashboard/project/uabmwhtoimelqpuhyluz/sql/new)",
+      "Bash(start http://localhost:3000/test-db)",
+      "Bash(start http://localhost:3001/check-tables)",
+      "Bash(start http://localhost:3000/finanzen/so-sparen-sie-2025-steuern)",
+      "Bash(start http://localhost:3000/ueber-uns)",
+      "Bash(start http://localhost:3000/kontakt)",
+      "Bash(start http://localhost:3000/impressum)",
+      "Bash(start:*)"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   }
 }
