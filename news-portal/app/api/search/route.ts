@@ -147,7 +147,7 @@ export async function GET(req: NextRequest) {
     // Never return 500 - always return 200 with empty results
     return NextResponse.json({ 
       items: [],
-      query: searchParams.get('q') || '',
+      query: '',
       error: 'search_error',
       suggestions: []
     }, { status: 200 });
