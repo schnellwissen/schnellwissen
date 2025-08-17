@@ -31,7 +31,7 @@ export default async function DarstellungPage() {
         <div className="card p-8">
           <h1 className="text-3xl font-bold text-text mb-8">Darstellung</h1>
           
-          <form action={saveDisplayPrefs} className="space-y-8">
+          <form action={saveDisplayPrefs as any} className="space-y-8">
             {/* Theme */}
             <fieldset>
               <legend className="text-lg font-semibold text-text mb-4">Theme</legend>
