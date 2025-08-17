@@ -13,7 +13,7 @@ async function getReadingHistory(userId: string) {
       progress_percent,
       last_read_at,
       reading_time_seconds,
-      article:articles (
+      article:articles!inner (
         id,
         title,
         slug,
@@ -44,7 +44,7 @@ async function getBookmarks(userId: string) {
     .select(`
       id,
       created_at,
-      article:articles (
+      article:articles!inner (
         id,
         title,
         slug,
@@ -85,8 +85,8 @@ export default async function LeseListe() {
         <h1 className="text-3xl font-bold text-text mb-8">Meine Leseliste</h1>
         
         <ReadingListClient
-          initialReadingHistory={readingHistory}
-          initialBookmarks={bookmarks}
+          initialReadingHistory={readingHistory as any}
+          initialBookmarks={bookmarks as any}
           userId={user.id}
         />
       </div>
