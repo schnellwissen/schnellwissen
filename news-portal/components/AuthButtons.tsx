@@ -38,7 +38,7 @@ export function AuthButtons({ user }: AuthButtonsProps) {
       <span className="text-sm text-gray-700">
         {user.displayName || user.email}
       </span>
-      <form action={signOutAction}>
+      <form action={signOutAction as any}>
         <button 
           type="submit"
           className="px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 transition-colors border border-red-300 rounded-lg hover:bg-red-50"

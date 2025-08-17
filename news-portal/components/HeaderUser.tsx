@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabaseBrowser } from '@/lib/supabase/client';
-import { signOutAction } from '@/app/auth/signout/action';
+import { signOutAction } from '@/app/(auth)/logout/action';
 
 export type UserProfile = {
   id: string;
@@ -275,11 +275,11 @@ export default function HeaderUser({ initialUser }: HeaderUserProps) {
           <div className="my-2 border-t border-gray-100 dark:border-gray-700"></div>
           
           <form 
-            action={async () => {
+            action={(async () => {
               setIsLoading(true);
               setIsMenuOpen(false);
               await signOutAction();
-            }}
+            }) as any}
           >
             <button
               type="submit"

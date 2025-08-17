@@ -127,7 +127,8 @@
       "Bash(start http://localhost:3000/ueber-uns)",
       "Bash(start http://localhost:3000/kontakt)",
       "Bash(start http://localhost:3000/impressum)",
-      "Bash(start:*)"
+      "Bash(start:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "defaultMode": "acceptEdits"

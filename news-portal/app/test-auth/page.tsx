@@ -12,8 +12,7 @@ export default async function TestAuthPage() {
   const cookieStore = await cookies();
   const allCookies = cookieStore.getAll().map(c => ({ 
     name: c.name, 
-    value: (c.value || '').slice(0, 20) + '...', 
-    path: c.path 
+    value: (c.value || '').slice(0, 20) + '...'
   }));
   
   const authCookies = allCookies.filter(c => 

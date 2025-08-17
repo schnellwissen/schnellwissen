@@ -182,7 +182,7 @@ export default async function HomePage() {
               {latest && latest.length > 0 ? (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {latest.map(article => (
-                    <ArticleCard key={article.id} a={article} />
+                    <ArticleCard key={article.id} a={article as any} />
                   ))}
                 </div>
               ) : (
