@@ -155,7 +155,7 @@ export default async function HomePage() {
                   </div>
                 </div>
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {mostRead.map((article: any, idx) => (
+                  {mostRead.map((article: any, idx: number) => (
                     <div key={article.id} className="relative">
                       {/* Kleines Rank-Badge als Overlay */}
                       {idx < 3 && (
