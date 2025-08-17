@@ -32,7 +32,7 @@ export default function PasswordChangeForm() {
   }
 
   return (
-    <form id="password-form" action={handleSubmit} className="space-y-4">
+    <form id="password-form" action={handleSubmit as any} className="space-y-4">
       <div>
         <label htmlFor="currentPassword" className="block text-sm font-medium text-text-muted mb-1">
           Aktuelles Passwort
