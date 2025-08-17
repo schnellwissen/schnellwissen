@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "name": "Technologie",
+    "slug": "technologie",
+    "color": "#2563eb",
+    "description": "Artikel über Technologie und Innovation",
+    "created_at": "2025-08-05T21:00:37.929Z",
+    "updated_at": "2025-08-05T21:00:37.929Z"
+  },
+  {
+    "id": "2",
+    "name": "Gesundheit",
+    "slug": "gesundheit",
+    "color": "#10b981",
+    "description": "Gesundheitstipps und medizinische Erkenntnisse",
+    "created_at": "2025-08-05T21:00:37.929Z",
+    "updated_at": "2025-08-05T21:00:37.929Z"
+  },
+  {
+    "id": "3",
+    "name": "Wissenschaft",
+    "slug": "wissenschaft",
+    "color": "#8b5cf6",
+    "description": "Wissenschaftliche Entdeckungen und Forschung",
+    "created_at": "2025-08-05T21:00:37.929Z",
+    "updated_at": "2025-08-05T21:00:37.929Z"
+  },
+  {
+    "id": "4",
+    "name": "Business",
+    "slug": "business",
+    "color": "#f59e0b",
+    "description": "Business-Tipps und Karriereratschläge",
+    "created_at": "2025-08-05T21:00:37.929Z",
+    "updated_at": "2025-08-05T21:00:37.929Z"
+  },
+  {
+    "id": "5",
+    "name": "Lifestyle",
+    "slug": "lifestyle",
+    "color": "#ef4444",
+    "description": "Lifestyle und persönliche Entwicklung",
+    "created_at": "2025-08-05T21:00:37.929Z",
+    "updated_at": "2025-08-05T21:00:37.929Z"
+  }
+]

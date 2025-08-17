@@ -1,2 +1,6 @@
-node_modules/
-schnell-wissen-de-restored/
+node_modules
+.next
+out
+.env
+.env.*
+
