@@ -71,7 +71,7 @@ function ArticleCard({ article }: { article: any }) {
     year: 'numeric'
   });
   
-  const categoryDisplay = categories[article.category_slug]?.name || article.category_slug;
+  const categoryDisplay = categories[article.category_slug as keyof typeof categories]?.name || article.category_slug;
   
   return (
     <Link href={href} className="group block rounded-2xl overflow-hidden border bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition">
