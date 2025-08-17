@@ -20,7 +20,7 @@ export default async function CheckBookmarksPage() {
   // Try to query bookmarks table
   let tableExists = false;
   let bookmarks = null;
-  let error = null;
+  let error: any = null;
   
   try {
     const { data, error: queryError } = await sb
