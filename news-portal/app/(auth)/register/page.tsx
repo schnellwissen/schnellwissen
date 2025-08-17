@@ -9,7 +9,7 @@ export default function RegisterPage() {
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <form action={formAction} className="bg-white rounded-lg shadow-lg max-w-md w-full mx-4 p-8 space-y-6">
+      <form action={formAction as any} className="bg-white rounded-lg shadow-lg max-w-md w-full mx-4 p-8 space-y-6">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Registrieren</h1>
           <p className="mt-2 text-sm text-gray-600">
