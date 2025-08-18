@@ -13,36 +13,36 @@ export default function Header({ user }: HeaderProps) {
   const initials = user?.email?.[0]?.toUpperCase() ?? "S";
   
   return (
-    <header className="sticky z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-700" style={{ top: 'env(safe-area-inset-top)' }}>
+    <header className="sticky z-50 bg-slate-900/70 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 border-b border-white/10" style={{ top: 'env(safe-area-inset-top)' }}>
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center min-h-[56px] sm:min-h-[64px] py-2">
+        <div className="flex items-center justify-between gap-3 sm:gap-4 py-3">
           <Navigation />
           
           {!user ? (
             <div className="flex items-center gap-2">
               <Link 
                 href="/login" 
-                className="px-3 sm:px-4 py-2.5 min-h-[44px] flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="h-10 px-4 flex items-center text-sm font-medium text-white/90 hover:text-white transition-colors border border-white/20 rounded-lg hover:bg-white/10 backdrop-blur"
               >
                 Anmelden
               </Link>
               <Link 
                 href="/register" 
-                className="px-3 sm:px-4 py-2.5 min-h-[44px] flex items-center text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                className="h-10 px-4 flex items-center text-sm font-semibold bg-white/20 text-white rounded-lg hover:bg-white/30 backdrop-blur transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50"
               >
                 Registrieren
               </Link>
             </div>
           ) : (
             <div className="relative group">
-              <button className="flex items-center gap-2 rounded-full px-2 py-1 min-h-[44px] ring-1 ring-gray-200 dark:ring-gray-700 bg-white dark:bg-gray-800 hover:ring-gray-300 dark:hover:ring-gray-600 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                <span className="grid h-8 w-8 place-content-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white text-sm font-semibold">
+              <button className="flex items-center gap-2 h-10 rounded-full px-2 ring-1 ring-white/20 bg-white/10 hover:bg-white/20 backdrop-blur transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50">
+                <span className="grid h-8 w-8 place-content-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-sm font-semibold">
                   {initials}
                 </span>
-                <span className="hidden sm:block max-w-[180px] truncate text-sm text-gray-700 dark:text-gray-300">
+                <span className="hidden sm:block max-w-[180px] truncate text-sm text-white/90">
                   {user.email}
                 </span>
-                <svg className="h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none">
+                <svg className="h-4 w-4 text-white/70 transition-transform group-hover:rotate-180" viewBox="0 0 24 24" fill="none">
                   <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
               </button>

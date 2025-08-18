@@ -109,30 +109,38 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* Modern Hero Section - Mobile-First */}
-      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12 md:py-16">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-dark via-primary to-primary-light text-white p-8 sm:p-12 md:p-16 shadow-soft">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 max-w-3xl leading-tight tracking-tight">
-            Deine tägliche Dosis Wissen – kompakt & fundiert
-          </h1>
-          <p className="text-base sm:text-lg md:text-xl max-w-2xl mb-6 sm:mb-8 opacity-90">
-            Expertenartikel zu Gesundheit, Finanzen, Technologie und mehr.
-          </p>
-          <form action="/suche" method="get" className="flex flex-col md:flex-row gap-3 max-w-xl">
-            <input 
-              type="search"
-              name="q"
-              className="flex-1 rounded-lg px-4 sm:px-5 py-3 min-h-[44px] text-text placeholder:text-text-muted focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
-              placeholder="Artikel suchen …" 
-              minLength={2}
-              required
-            />
-            <button type="submit" className="bg-white text-primary hover:bg-gray-100 font-semibold rounded-lg px-6 sm:px-8 py-3 min-h-[44px] transition-all shadow-md hover:shadow-lg">
-              Suchen
-            </button>
-          </form>
-          <div className="absolute -bottom-16 -right-16 w-72 h-72 bg-primary-light opacity-20 rotate-45 rounded-3xl"></div>
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-white opacity-10 rounded-full"></div>
+      {/* Hero Section - Mobile-First, zentriert & kompakt */}
+      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg shadow-black/10">
+          <div className="mx-auto max-w-screen-md px-4 py-10 sm:py-12 md:py-16 text-center">
+            <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl md:text-4xl leading-tight">
+              Deine tägliche Dosis Wissen – kompakt & fundiert
+            </h1>
+            <p className="mt-3 text-sm text-white/90 sm:mt-4 sm:text-base md:text-lg leading-relaxed">
+              Expertenartikel zu Gesundheit, Finanzen, Technologie und mehr.
+            </p>
+            
+            {/* Suche: mobil stack, ab md inline */}
+            <form action="/suche" method="get" className="mx-auto mt-6 grid gap-3 sm:max-w-lg md:grid-cols-[1fr_auto]">
+              <input
+                type="search"
+                name="q"
+                placeholder="Artikel suchen …"
+                className="h-12 w-full rounded-xl bg-white/95 px-4 text-slate-900 placeholder-slate-500 outline-none focus:ring-2 focus:ring-white backdrop-blur"
+                minLength={2}
+                required
+              />
+              <button
+                type="submit"
+                className="h-12 rounded-xl bg-white/20 px-6 font-semibold text-white backdrop-blur hover:bg-white/30 transition-all md:justify-self-start"
+              >
+                Suchen
+              </button>
+            </form>
+          </div>
+          {/* Decorative Elements */}
+          <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-white/5 blur-3xl"></div>
+          <div className="absolute -top-20 -left-20 h-48 w-48 rounded-full bg-white/5 blur-2xl"></div>
         </div>
       </section>
 
@@ -142,45 +150,55 @@ export default async function HomePage() {
           
           {/* Main Feed */}
           <div className="xl:col-span-3">
-            {/* Meistgelesene Artikel - identisch zu Neueste Artikel */}
+            {/* Meistgelesene Artikel - Horizontal Scroll auf Mobile */}
             {mostRead && mostRead.length > 0 && (
-              <div className="mb-10">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-text tracking-tight">Meistgelesene Artikel</h2>
-                  <div className="flex items-center gap-2 text-sm text-text-muted">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                    <span>Letzte 30 Tage</span>
+              <section className="mb-10">
+                <div className="flex items-baseline justify-between mb-4">
+                  <h2 className="text-xl font-bold sm:text-2xl text-text">Meistgelesene Artikel</h2>
+                  <span className="text-sm text-slate-400">Letzte 30 Tage</span>
+                </div>
+                {/* Mobile: Horizontal Scroll, Desktop: Grid */}
+                <div className="sm:hidden">
+                  <div className="flex gap-4 overflow-x-auto px-1 pb-4 snap-x snap-mandatory scrollbar-hide">
+                    {mostRead.map((article: any, idx: number) => (
+                      <div key={article.id} className="relative snap-start min-w-[85%] sm:min-w-[360px]">
+                        {idx < 3 && (
+                          <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-7 w-7 grid place-content-center rounded-full shadow-lg">
+                            {idx + 1}
+                          </div>
+                        )}
+                        <ArticleCard a={article} />
+                      </div>
+                    ))}
                   </div>
                 </div>
-                <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {/* Desktop: Grid */}
+                <div className="hidden sm:grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {mostRead.map((article: any, idx: number) => (
                     <div key={article.id} className="relative">
-                      {/* Kleines Rank-Badge als Overlay */}
                       {idx < 3 && (
-                        <div className="absolute top-4 left-4 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                          #{idx + 1}
+                        <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-7 w-7 grid place-content-center rounded-full shadow-lg">
+                          {idx + 1}
                         </div>
                       )}
                       <ArticleCard a={article} />
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
             )}
 
-            {/* Latest Articles Grid */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-text tracking-tight">Neueste Artikel</h2>
-                <Link href="/alle" className="link text-sm font-medium">
+            {/* Latest Articles - Responsive Grid */}
+            <section>
+              <div className="flex items-baseline justify-between mb-4">
+                <h2 className="text-xl font-bold sm:text-2xl text-text">Neueste Artikel</h2>
+                <Link href="/alle" className="text-sm font-medium text-blue-500 hover:text-blue-600">
                   Alle anzeigen →
                 </Link>
               </div>
               
               {latest && latest.length > 0 ? (
-                <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {latest.map(article => (
                     <ArticleCard key={article.id} a={article as any} />
                   ))}
@@ -202,15 +220,15 @@ export default async function HomePage() {
                   </Link>
                 </div>
               )}
-            </div>
+            </section>
           </div>
 
           {/* Sidebar */}
-          <div className="xl:col-span-1 space-y-6">
+          <aside className="xl:col-span-1 space-y-6">
             {/* Categories */}
-            <section className="card p-6">
-              <h3 className="text-lg font-bold text-text mb-5 flex items-center">
-                <svg className="w-5 h-5 mr-2 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <section className="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/5">
+              <h3 className="text-lg font-bold text-white mb-5 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                 </svg>
                 Kategorien
@@ -221,7 +239,7 @@ export default async function HomePage() {
                   <Link
                     key={cat}
                     href={`/kategorie/${cat.toLowerCase()}`}
-                    className="py-2 px-3 text-sm rounded-lg bg-gray-50 dark:bg-gray-700 text-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-200 text-center font-medium"
+                    className="py-2.5 px-3 text-sm rounded-lg bg-white/5 text-slate-300 hover:bg-blue-500/20 hover:text-white transition-all text-center font-medium"
                   >
                     {cat}
                   </Link>
@@ -230,22 +248,22 @@ export default async function HomePage() {
             </section>
 
             {/* Newsletter */}
-            <section className="bg-gradient-to-br from-accent to-accent/80 rounded-xl p-6 text-white">
+            <section className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 text-white">
               <h3 className="text-xl font-bold mb-3">
                 Newsletter
               </h3>
-              <p className="text-white/90 mb-4 text-sm">
+              <p className="text-white/90 mb-4 text-sm leading-relaxed">
                 Erhalten Sie wöchentlich die besten Artikel direkt in Ihr Postfach
               </p>
               <form className="space-y-3">
                 <input 
                   type="email"
                   placeholder="Ihre E-Mail-Adresse"
-                  className="w-full px-4 py-2 rounded-lg bg-white text-text placeholder-text-muted focus:ring-2 focus:ring-white"
+                  className="h-12 w-full px-4 rounded-xl bg-white/95 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-white"
                 />
                 <button 
                   type="submit"
-                  className="w-full py-2 px-4 bg-white text-accent font-bold rounded-lg hover:bg-gray-100 transition-colors"
+                  className="h-12 w-full px-4 bg-white/20 text-white font-semibold rounded-xl backdrop-blur hover:bg-white/30 transition-all"
                 >
                   Abonnieren
                 </button>
@@ -253,31 +271,31 @@ export default async function HomePage() {
             </section>
 
             {/* Quick Links */}
-            <section className="card p-6">
-              <h3 className="text-lg font-bold text-text mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><Link href="/ueber-uns" className="text-text-muted hover:text-primary text-sm">Über uns</Link></li>
-                <li><Link href="/kontakt" className="text-text-muted hover:text-primary text-sm">Kontakt</Link></li>
-                <li><Link href="/impressum" className="text-text-muted hover:text-primary text-sm">Impressum</Link></li>
-                <li><Link href="/datenschutz" className="text-text-muted hover:text-primary text-sm">Datenschutz</Link></li>
+            <section className="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/5">
+              <h3 className="text-lg font-bold text-white mb-4">Quick Links</h3>
+              <ul className="space-y-3">
+                <li><Link href="/ueber-uns" className="text-slate-400 hover:text-blue-400 text-sm transition-colors">Über uns</Link></li>
+                <li><Link href="/kontakt" className="text-slate-400 hover:text-blue-400 text-sm transition-colors">Kontakt</Link></li>
+                <li><Link href="/impressum" className="text-slate-400 hover:text-blue-400 text-sm transition-colors">Impressum</Link></li>
+                <li><Link href="/datenschutz" className="text-slate-400 hover:text-blue-400 text-sm transition-colors">Datenschutz</Link></li>
               </ul>
             </section>
-          </div>
+          </aside>
         </div>
       </div>
 
       {/* Footer with Safe Area Support */}
-      <footer className="mt-16 border-t border-gray-200 bg-white" style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))' }}>
-        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-sm text-text-muted">
-            <div className="mb-2">
+      <footer className="mt-16 border-t border-white/10 bg-slate-900">
+        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))' }}>
+          <div className="text-center text-sm text-slate-400">
+            <div className="mb-3">
               © 2024 SchnellWissen. Alle Rechte vorbehalten.
             </div>
-            <div className="flex justify-center items-center gap-4">
-              <Link href="/impressum" className="hover:text-primary transition-colors">Impressum</Link>
-              <span className="text-gray-400">•</span>
-              <Link href="/datenschutz" className="hover:text-primary transition-colors">Datenschutz</Link>
-              <span className="text-gray-400">•</span>
+            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4">
+              <Link href="/impressum" className="hover:text-white transition-colors">Impressum</Link>
+              <span className="text-slate-600">•</span>
+              <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
+              <span className="text-slate-600">•</span>
               <FooterConsentLink />
             </div>
           </div>

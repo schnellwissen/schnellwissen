@@ -289,6 +289,16 @@ a:focus-visible {
   background: var(--primary);
 }
 
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Utility Classes */
 .text-gradient {
   @apply bg-gradient-to-r from-primary via-primary-light to-accent bg-clip-text text-transparent;

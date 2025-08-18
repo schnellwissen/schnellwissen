@@ -193,12 +193,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </span>
           </div>
           
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-white">
             {article.title}
           </h1>
           
           {article.excerpt && (
-            <p className="mt-3 text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+            <p className="mt-3 text-base sm:text-lg text-slate-300 leading-relaxed">
               {article.excerpt}
             </p>
           )}
@@ -226,7 +226,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="relative flex justify-center">
           {/* TEXTSPALTE - Mobile-First Typography */}
           <div className="w-full max-w-3xl">
-            <article className="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert prose-slate dark:prose-gray prose-p:leading-relaxed prose-headings:font-extrabold prose-headings:leading-tight prose-a:text-primary max-w-none">
+            <article className="prose prose-sm sm:prose-base lg:prose-lg prose-invert prose-slate prose-p:leading-relaxed prose-headings:font-extrabold prose-headings:leading-tight prose-a:text-blue-400 max-w-none">
               <div dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }} />
             </article>
           </div>
@@ -292,7 +292,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       />
 
       {/* Article Footer with Safe Area */}
-      <footer className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))' }}>
+      <footer className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12" style={{ paddingBottom: 'calc(3rem + env(safe-area-inset-bottom))' }}>
         <div className="max-w-4xl mx-auto">
           <div className="border-t border-gray-200 pt-8">
             <div className="flex items-center justify-between">
