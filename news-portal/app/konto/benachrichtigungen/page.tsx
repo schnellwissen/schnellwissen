@@ -40,18 +40,6 @@ export default async function BenachrichtigungenPage() {
                     defaultChecked={true}
                   />
                   <div className="flex-1">
-                    <p className="font-medium text-text">Newsletter</p>
-                    <p className="text-sm text-text-muted">Wöchentliche Zusammenfassung der wichtigsten Nachrichten</p>
-                  </div>
-                </label>
-                
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary mt-0.5"
-                    defaultChecked={true}
-                  />
-                  <div className="flex-1">
                     <p className="font-medium text-text">Breaking News</p>
                     <p className="text-sm text-text-muted">Sofortige Benachrichtigung bei wichtigen Eilmeldungen</p>
                   </div>

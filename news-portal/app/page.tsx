@@ -232,28 +232,6 @@ export default async function HomePage() {
               </div>
             </section>
 
-            {/* Newsletter */}
-            <section className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl p-6 text-white">
-              <h3 className="text-xl font-bold mb-3">
-                Newsletter
-              </h3>
-              <p className="text-white/90 mb-4 text-sm leading-relaxed">
-                Erhalten Sie wöchentlich die besten Artikel direkt in Ihr Postfach
-              </p>
-              <form className="space-y-3">
-                <input 
-                  type="email"
-                  placeholder="Ihre E-Mail-Adresse"
-                  className="h-12 w-full px-4 rounded-xl bg-white/95 text-slate-900 placeholder-slate-500 focus:ring-2 focus:ring-white"
-                />
-                <button 
-                  type="submit"
-                  className="h-12 w-full px-4 bg-white/20 text-white font-semibold rounded-xl backdrop-blur hover:bg-white/30 transition-all"
-                >
-                  Abonnieren
-                </button>
-              </form>
-            </section>
 
             {/* Quick Links */}
             <section className="rounded-2xl bg-slate-800 p-6 ring-1 ring-white/5">

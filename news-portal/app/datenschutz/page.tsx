@@ -242,7 +242,7 @@ export default function DatenschutzPage() {
             <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-lg">
               <p className="text-sm text-blue-900">
                 <strong>Hinweis:</strong> Diese Datenschutzerklärung stellt eine Grundversion dar. 
-                Bei der Integration weiterer Funktionen (z.B. Newsletter, Analysetools, Social Media) 
+                Bei der Integration weiterer Funktionen (z.B. Analysetools, Social Media) 
                 wird diese Erklärung entsprechend erweitert und angepasst.
               </p>
             </div>

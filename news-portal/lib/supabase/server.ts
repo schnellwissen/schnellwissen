@@ -17,10 +17,20 @@ export async function sbServer() {
           return cookieStore.get(name)?.value;
         },
         set: (name: string, value: string, options: any) => {
-          cookieStore.set(name, value, options);
+          try {
+            cookieStore.set(name, value, options);
+          } catch (error) {
+            // Silently handle cookie setting errors in non-route handler contexts
+            console.warn('Cookie setting skipped (not in Server Action/Route Handler)');
+          }
         },
         remove: (name: string, options: any) => {
-          cookieStore.set(name, '', { ...options, maxAge: 0 });
+          try {
+            cookieStore.set(name, '', { ...options, maxAge: 0 });
+          } catch (error) {
+            // Silently handle cookie removal errors in non-route handler contexts
+            console.warn('Cookie removal skipped (not in Server Action/Route Handler)');
+          }
         },
       },
     }
