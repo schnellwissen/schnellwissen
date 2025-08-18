@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { supabaseServer } from '@/lib/supabase/server';
 import ArticleCard from '@/components/ArticleCard';
+import HorizontalCarousel from '@/components/HorizontalCarousel';
 import { getArticlePathFromArticle } from '@/lib/paths';
 import FooterConsentLink from '@/components/consent/FooterConsentLink';
 
@@ -150,30 +151,29 @@ export default async function HomePage() {
           
           {/* Main Feed */}
           <div className="xl:col-span-3">
-            {/* Meistgelesene Artikel - Horizontal Scroll */}
+            {/* Meistgelesene Artikel - Optimiertes Carousel */}
             {mostRead && mostRead.length > 0 && (
               <section className="mb-10">
                 <div className="flex items-baseline justify-between mb-4">
                   <h2 className="font-bold" style={{ fontSize: 'var(--sw-h2)' }}>Meistgelesene Artikel</h2>
                   <span className="text-sm text-slate-400">Letzte 30 Tage</span>
                 </div>
-                {/* Horizontal Scroll / Snap for all screens */}
-                <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
+                <HorizontalCarousel>
                   {mostRead.map((article: any, idx: number) => (
-                    <article key={article.id} className="relative snap-start min-w-[85%] sm:min-w-[360px] flex-shrink-0">
+                    <div key={article.id} className="relative snap-start min-w-[82%] xs:min-w-[78%] sm:min-w-[340px] md:min-w-[360px] flex-shrink-0">
                       {idx < 3 && (
-                        <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-7 w-7 grid place-content-center rounded-full shadow-lg">
+                        <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-6 w-6 grid place-content-center rounded-full shadow-lg">
                           {idx + 1}
                         </div>
                       )}
                       <ArticleCard a={article} />
-                    </article>
+                    </div>
                   ))}
-                </div>
+                </HorizontalCarousel>
               </section>
             )}
 
-            {/* Neueste Artikel - Horizontal Scroll wie Meistgelesene */}
+            {/* Neueste Artikel - Identisches Carousel */}
             <section>
               <div className="flex items-baseline justify-between mb-4">
                 <h2 className="font-bold" style={{ fontSize: 'var(--sw-h2)' }}>Neueste Artikel</h2>
@@ -183,13 +183,13 @@ export default async function HomePage() {
               </div>
               
               {latest && latest.length > 0 ? (
-                <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
+                <HorizontalCarousel>
                   {latest.map(article => (
-                    <article key={article.id} className="snap-start min-w-[85%] sm:min-w-[360px] flex-shrink-0">
+                    <div key={article.id} className="snap-start min-w-[82%] xs:min-w-[78%] sm:min-w-[340px] md:min-w-[360px] flex-shrink-0">
                       <ArticleCard a={article as any} />
-                    </article>
+                    </div>
                   ))}
-                </div>
+                </HorizontalCarousel>
               ) : (
                 <div className="card p-12 text-center">
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
