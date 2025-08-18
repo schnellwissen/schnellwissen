@@ -151,18 +151,18 @@ export default async function HomePage() {
           
           {/* Main Feed */}
           <div className="xl:col-span-3">
-            {/* Meistgelesene Artikel - Optimiertes Carousel */}
+            {/* Meistgelesene Artikel - Kompaktes Grid-Carousel */}
             {mostRead && mostRead.length > 0 && (
               <section className="mb-10">
-                <div className="flex items-baseline justify-between mb-4">
+                <div className="flex items-baseline justify-between mb-4 px-4">
                   <h2 className="font-bold" style={{ fontSize: 'var(--sw-h2)' }}>Meistgelesene Artikel</h2>
                   <span className="text-sm text-slate-400">Letzte 30 Tage</span>
                 </div>
                 <HorizontalCarousel>
                   {mostRead.map((article: any, idx: number) => (
-                    <div key={article.id} className="relative snap-start min-w-[82%] xs:min-w-[78%] sm:min-w-[340px] md:min-w-[360px] flex-shrink-0">
+                    <div key={article.id} className="relative">
                       {idx < 3 && (
-                        <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-6 w-6 grid place-content-center rounded-full shadow-lg">
+                        <div className="absolute top-2 left-2 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-[10px] font-bold h-5 w-5 grid place-content-center rounded-full shadow-lg">
                           {idx + 1}
                         </div>
                       )}
@@ -173,9 +173,9 @@ export default async function HomePage() {
               </section>
             )}
 
-            {/* Neueste Artikel - Identisches Carousel */}
+            {/* Neueste Artikel - Identisches Grid-Carousel */}
             <section>
-              <div className="flex items-baseline justify-between mb-4">
+              <div className="flex items-baseline justify-between mb-4 px-4">
                 <h2 className="font-bold" style={{ fontSize: 'var(--sw-h2)' }}>Neueste Artikel</h2>
                 <Link href="/alle" className="text-sm text-slate-400 hover:text-slate-300">
                   Alle anzeigen →
@@ -185,9 +185,7 @@ export default async function HomePage() {
               {latest && latest.length > 0 ? (
                 <HorizontalCarousel>
                   {latest.map(article => (
-                    <div key={article.id} className="snap-start min-w-[82%] xs:min-w-[78%] sm:min-w-[340px] md:min-w-[360px] flex-shrink-0">
-                      <ArticleCard a={article as any} />
-                    </div>
+                    <ArticleCard key={article.id} a={article as any} />
                   ))}
                 </HorizontalCarousel>
               ) : (

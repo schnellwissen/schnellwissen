@@ -25,42 +25,42 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ a }: ArticleCardProps) {
   return (
-    <article className="relative group overflow-hidden rounded-2xl bg-slate-800/80 ring-1 ring-white/5 hover:ring-white/10 transition-all">
+    <article className="snap-center w-full relative group overflow-hidden rounded-xl bg-slate-800/80 ring-1 ring-white/5 hover:ring-white/10 transition-all">
       <Link href={getArticlePathFromArticle(a)} className="block">
-        {/* Bild-Wrapper mit fester Aspect Ratio */}
+        {/* Bildhöhe bewusst klein halten */}
         {a.cover_image_url && (
-          <div className="relative aspect-[16/9] md:aspect-[4/3] overflow-hidden bg-slate-700">
+          <div className="relative h-[136px] xs:h-[148px] sm:h-[160px] overflow-hidden bg-slate-700">
             <Image
               src={a.cover_image_url}
               alt={a.title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 640px) 82vw, (max-width: 1024px) 360px, 360px"
+              sizes="(max-width: 640px) 70vw, 300px"
               priority={false}
               loading="lazy"
             />
           </div>
         )}
         
-        {/* Kompakter Content */}
-        <div className="p-4">
+        {/* Sehr kompakter Content */}
+        <div className="p-3 sm:p-4">
           {a.categories && (
-            <span className="inline-block px-2 py-0.5 text-[11px] font-medium rounded-full bg-blue-500/10 text-blue-400 mb-2">
+            <span className="inline-block px-2 py-0.5 text-[10px] font-medium rounded-full bg-blue-500/10 text-blue-400 mb-1.5">
               {a.categories.name}
             </span>
           )}
           
-          <h3 className="text-base md:text-lg font-semibold text-white group-hover:text-blue-400 transition-colors leading-snug line-clamp-2">
+          <h3 className="text-[15px] sm:text-base font-semibold text-white group-hover:text-blue-400 transition-colors leading-snug line-clamp-2">
             {a.title}
           </h3>
           
           {a.excerpt && (
-            <p className="mt-2 text-[13px] md:text-sm text-slate-300 leading-relaxed line-clamp-2">
+            <p className="mt-1.5 text-[13px] sm:text-[14px] text-slate-300 leading-relaxed line-clamp-2">
               {a.excerpt}
             </p>
           )}
           
-          <div className="mt-3 flex items-center justify-between text-xs text-slate-400">
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-slate-400">
             <span>
               {a.views_30d !== undefined && a.views_30d > 0 ? (
                 `${a.views_30d.toLocaleString('de-DE')} Aufrufe`
@@ -78,8 +78,8 @@ export default function ArticleCard({ a }: ArticleCardProps) {
         </div>
       </Link>
       
-      {/* Bookmark button - kleiner auf Mobile */}
-      <button className="absolute right-2 top-2 h-8 w-8 rounded-full bg-slate-900/60 text-white/90 backdrop-blur hover:bg-slate-900/80 transition-all grid place-content-center">
+      {/* Bookmark button noch kleiner */}
+      <button className="absolute right-2 top-2 h-7 w-7 rounded-full bg-slate-900/60 text-white/90 backdrop-blur hover:bg-slate-900/80 transition-all grid place-content-center">
         <BookmarkButton
           articleId={a.id}
           className="!p-0 !min-w-0 !min-h-0 !bg-transparent !shadow-none hover:!scale-100"
