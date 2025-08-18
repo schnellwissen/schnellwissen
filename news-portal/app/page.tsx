@@ -3,7 +3,7 @@ import { supabaseServer } from '@/lib/supabase/server';
 import ArticleCard from '@/components/ArticleCard';
 import HorizontalCarousel from '@/components/HorizontalCarousel';
 import { getArticlePathFromArticle } from '@/lib/paths';
-import FooterConsentLink from '@/components/consent/FooterConsentLink';
+import FooterConsentClient from '@/components/FooterConsentClient';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -281,7 +281,7 @@ export default async function HomePage() {
               <span className="text-slate-600">•</span>
               <Link href="/datenschutz" className="hover:text-white transition-colors">Datenschutz</Link>
               <span className="text-slate-600">•</span>
-              <FooterConsentLink />
+              <FooterConsentClient />
             </div>
           </div>
         </div>
