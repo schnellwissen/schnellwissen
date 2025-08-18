@@ -18,7 +18,9 @@ export default function ImpressumPage() {
               <h2 className="text-xl font-semibold text-text mb-3">Angaben gemäß § 5 TMG</h2>
               <div className="space-y-1">
                 <p><strong className="text-text">SchnellWissen</strong></p>
-                <p>Betreiber: Paul Nelles</p>
+                <p>Betreiber: Pabo</p>
+                <p>Musterstraße 123</p>
+                <p>50667 Köln</p>
                 <p>E-Mail: schnellwissen5@gmail.com</p>
               </div>
             </section>
@@ -26,8 +28,9 @@ export default function ImpressumPage() {
             <section>
               <h2 className="text-xl font-semibold text-text mb-3">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
               <div className="space-y-1">
-                <p>Paul Nelles</p>
-                <p className="text-sm italic">(Adresse auf Anfrage)</p>
+                <p>Pabo</p>
+                <p>Musterstraße 123</p>
+                <p>50667 Köln</p>
               </div>
             </section>
             
