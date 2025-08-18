@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Roboto_Mono } from "next/font/google";
-import { Toaster } from "sonner";
 import "./globals.css";
 import Header from "@/components/Header";
-import ConsentWrapper from "@/components/consent/ConsentWrapper";
+import RootProviders from "./RootProviders";
 import { sbServer } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
@@ -53,20 +52,10 @@ export default async function RootLayout({
             html.classList.toggle('dark', !!wantDark);
           } catch(e) {}
         `}} />
-        <ConsentWrapper>
+        <RootProviders>
           <Header user={user ?? undefined} />
           {children}
-          <Toaster 
-            position="top-right"
-            toastOptions={{
-              duration: 5000,
-              style: {
-                background: '#fff',
-                color: '#333',
-              },
-            }}
-          />
-        </ConsentWrapper>
+        </RootProviders>
       </body>
     </html>
   );

@@ -25,7 +25,14 @@ const ConsentContext = createContext<ConsentContextType | null>(null);
 export const useConsent = () => {
   const context = useContext(ConsentContext);
   if (!context) {
-    // Return a safe default instead of throwing
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(
+        'useConsent called outside of <ConsentProvider>. ' +
+        'Make sure your component is wrapped in RootProviders. ' +
+        'Check your component tree!'
+      );
+    }
+    // Fallback verhindert Crash, aber bitte NICHT drauf verlassen
     return {
       consent: null,
       hasUserConsented: false,
@@ -35,7 +42,7 @@ export const useConsent = () => {
       openSettings: () => {},
       closeSettings: () => {},
       isSettingsOpen: false
-    };
+    } as ConsentContextType;
   }
   return context;
 };
