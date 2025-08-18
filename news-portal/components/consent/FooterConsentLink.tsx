@@ -1,15 +1,17 @@
-"use client";
-import { useConsent } from "@/lib/consent/context";
+'use client';
+
+import { useConsent } from './ConsentProvider';
 
 export default function FooterConsentLink() {
-  const { openPreferences } = useConsent();
+  const { openSettings } = useConsent();
   
   return (
     <button 
-      onClick={openPreferences}
-      className="text-text-muted hover:text-primary text-sm transition-colors"
+      onClick={openSettings}
+      className="hover:text-white transition-colors"
+      type="button"
     >
-      Datenschutz & Cookies
+      Cookie-Einstellungen
     </button>
   );
 }

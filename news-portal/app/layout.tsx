@@ -3,8 +3,10 @@ import { Inter, Roboto_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 import Header from "@/components/Header";
-import { ConsentProvider } from "@/lib/consent/context";
-import ConsentManager from "@/components/consent/ConsentManager";
+import ConsentProvider from "@/components/consent/ConsentProvider";
+import ConsentBanner from "@/components/consent/ConsentBanner";
+import ConsentModal from "@/components/consent/ConsentModal";
+import Analytics from "@/components/analytics/Analytics";
 import { sbServer } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 
@@ -54,10 +56,12 @@ export default async function RootLayout({
             html.classList.toggle('dark', !!wantDark);
           } catch(e) {}
         `}} />
-        <ConsentProvider version="1.0.0">
+        <ConsentProvider>
           <Header user={user ?? undefined} />
           {children}
-          <ConsentManager />
+          <ConsentBanner />
+          <ConsentModal />
+          <Analytics />
           <Toaster 
             position="top-right"
             toastOptions={{
