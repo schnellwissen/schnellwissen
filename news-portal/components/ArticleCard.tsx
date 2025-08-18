@@ -78,14 +78,14 @@ export default function ArticleCard({ a }: ArticleCardProps) {
         </div>
       </Link>
       
-      {/* Bookmark button noch kleiner */}
-      <button className="absolute right-2 top-2 h-7 w-7 rounded-full bg-slate-900/60 text-white/90 backdrop-blur hover:bg-slate-900/80 transition-all grid place-content-center">
+      {/* Bookmark button - direkt ohne Wrapper */}
+      <div className="absolute right-2 top-2">
         <BookmarkButton
           articleId={a.id}
-          className="!p-0 !min-w-0 !min-h-0 !bg-transparent !shadow-none hover:!scale-100"
+          className="!h-7 !w-7 !p-0 !rounded-full !bg-slate-900/60 hover:!bg-slate-900/80 !backdrop-blur !transition-all"
           showText={false}
         />
-      </button>
+      </div>
     </article>
   );
 }
