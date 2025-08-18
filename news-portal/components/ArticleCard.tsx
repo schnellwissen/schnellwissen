@@ -27,7 +27,7 @@ export default function ArticleCard({ a }: ArticleCardProps) {
   return (
     <article className="snap-center w-full relative group overflow-hidden rounded-xl bg-slate-800/80 ring-1 ring-white/5 hover:ring-white/10 transition-all">
       <Link href={getArticlePathFromArticle(a)} className="block">
-        {/* Bildhöhe bewusst klein halten */}
+        {/* Bildhöhe bewusst klein halten mit Gradient für besseren Kontrast */}
         {a.cover_image_url && (
           <div className="relative h-[136px] xs:h-[148px] sm:h-[160px] overflow-hidden bg-slate-700">
             <Image
@@ -39,6 +39,8 @@ export default function ArticleCard({ a }: ArticleCardProps) {
               priority={false}
               loading="lazy"
             />
+            {/* Gradient-Overlay für besseren Icon-Kontrast */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20" />
           </div>
         )}
         
@@ -78,14 +80,12 @@ export default function ArticleCard({ a }: ArticleCardProps) {
         </div>
       </Link>
       
-      {/* Bookmark button - direkt ohne Wrapper */}
-      <div className="absolute right-2 top-2">
-        <BookmarkButton
-          articleId={a.id}
-          className="!h-7 !w-7 !p-0 !rounded-full !bg-slate-900/60 hover:!bg-slate-900/80 !backdrop-blur !transition-all"
-          showText={false}
-        />
-      </div>
+      {/* Bookmark button - sichtbar mit Glas-Effekt */}
+      <BookmarkButton
+        articleId={a.id}
+        className="absolute right-2 top-2 z-20"
+        showText={false}
+      />
     </article>
   );
 }

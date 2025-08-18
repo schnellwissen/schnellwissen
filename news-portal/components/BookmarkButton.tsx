@@ -105,35 +105,66 @@ export default function BookmarkButton({ articleId, className = '', showText = f
     <button
       onClick={handleToggleBookmark}
       disabled={isLoading}
-      className={`inline-flex items-center justify-center gap-2 transition-all disabled:opacity-50 ${
+      aria-pressed={isBookmarked}
+      aria-label={isBookmarked ? 'Artikel aus Leseliste entfernen' : 'Artikel zur Leseliste hinzufügen'}
+      className={`${
         showText 
-          ? `px-4 py-2 rounded-lg ${
+          ? `inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all disabled:opacity-50 ${
               isBookmarked 
-                ? 'bg-primary text-white hover:bg-primary-dark' 
+                ? 'bg-emerald-500 text-white hover:bg-emerald-600' 
                 : 'bg-gray-100 dark:bg-gray-800 text-text hover:bg-gray-200 dark:hover:bg-gray-700'
             }`
-          : `p-2 rounded-full ${
-              isBookmarked 
-                ? 'text-amber-500 hover:text-amber-600' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
-            }`
+          : [
+              // Tap-Ziel mindestens 44x44px
+              'h-11 w-11 min-h-[44px] min-w-[44px]',
+              'flex items-center justify-center',
+              // Glas-Badge für Kontrast auf JEDEM Bild
+              'rounded-full backdrop-blur-md shadow-lg ring-1 ring-white/25',
+              // Klare States: grün wenn aktiv, dunkel wenn inaktiv
+              isBookmarked
+                ? 'bg-emerald-500 text-white hover:bg-emerald-600'
+                : 'bg-black/55 text-white hover:bg-black/65 dark:bg-black/60',
+              // Fokus & Interaktion
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/90',
+              'transition-all active:scale-[0.98]',
+              'disabled:opacity-50'
+            ].join(' ')
       } ${className}`}
-      aria-label={isBookmarked ? 'Artikel aus Leseliste entfernen' : 'Artikel zur Leseliste hinzufügen'}
     >
-      {isBookmarked ? (
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-        </svg>
-      ) : (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-        </svg>
-      )}
+      {/* Icon mit festen Farben, kein currentColor */}
+      <svg 
+        viewBox="0 0 24 24" 
+        className={`${showText ? 'w-5 h-5' : 'w-6 h-6'} ${isBookmarked && !showText ? 'animate-[pop_140ms_ease-out]' : ''}`}
+        aria-hidden="true"
+      >
+        {isBookmarked ? (
+          // Gefülltes Lesezeichen (immer weiß)
+          <path
+            d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1z"
+            className="fill-white"
+          />
+        ) : (
+          // Outline Lesezeichen (immer weiß)
+          <path
+            d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1z"
+            className="fill-transparent stroke-white"
+            strokeWidth={1.9}
+            strokeLinejoin="round"
+          />
+        )}
+      </svg>
       {showText && (
         <span className="font-medium">
           {isBookmarked ? 'Gespeichert' : 'Speichern'}
         </span>
       )}
+      <style jsx>{`
+        @keyframes pop {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+          100% { transform: scale(1); }
+        }
+      `}</style>
     </button>
   );
 }
