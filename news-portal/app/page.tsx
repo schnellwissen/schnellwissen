@@ -109,39 +109,38 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* Hero Section - Mobile optimiert, kompakter */}
-      <section className="mx-auto max-w-screen-xl px-3 sm:px-6 lg:px-8 py-3 sm:py-6 md:py-8">
-        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg">
-          <div className="mx-auto max-w-screen-md px-4 sm:px-6 py-6 sm:py-10 md:py-14 text-center">
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
-              Deine tägliche Dosis Wissen
-              <span className="hidden sm:inline"> – kompakt & fundiert</span>
+      {/* Hero Section - Harmonische Typografie */}
+      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg">
+          <div className="mx-auto max-w-screen-md px-4 py-10 sm:py-12 md:py-16 text-center">
+            <h1 className="font-extrabold tracking-tight" style={{ fontSize: 'var(--sw-h1)', lineHeight: '1.2' }}>
+              Deine tägliche Dosis Wissen – kompakt & fundiert
             </h1>
-            <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-white/90 leading-relaxed max-w-lg mx-auto">
+            <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-white/90 leading-relaxed max-w-lg mx-auto">
               Expertenartikel zu Gesundheit, Finanzen, Technologie und mehr.
             </p>
             
-            {/* Suche: kompakter auf Mobile */}
-            <form action="/suche" method="get" className="mx-auto mt-4 sm:mt-6 grid gap-2 sm:gap-3 max-w-sm sm:max-w-lg md:grid-cols-[1fr_auto]">
+            {/* Suche: Mobile gestapelt, ab md nebeneinander */}
+            <form action="/suche" method="get" className="mx-auto mt-6 grid gap-3 max-w-lg md:grid-cols-[1fr_auto]">
               <input
                 type="search"
                 name="q"
                 placeholder="Artikel suchen…"
-                className="h-10 sm:h-12 w-full rounded-lg sm:rounded-xl bg-white/95 px-3 sm:px-4 text-sm sm:text-base text-slate-900 placeholder-slate-500 outline-none focus:ring-2 focus:ring-white backdrop-blur"
+                className="h-11 w-full rounded-xl bg-white/95 px-4 text-slate-900 placeholder-slate-500 outline-none focus:ring-2 focus:ring-white backdrop-blur"
                 minLength={2}
                 required
               />
               <button
                 type="submit"
-                className="h-10 sm:h-12 rounded-lg sm:rounded-xl bg-white/20 px-4 sm:px-6 font-semibold text-sm sm:text-base text-white backdrop-blur hover:bg-white/30 transition-all md:justify-self-start"
+                className="h-11 rounded-xl bg-white/20 px-6 font-semibold text-white backdrop-blur hover:bg-white/30 transition-all"
               >
                 Suchen
               </button>
             </form>
           </div>
-          {/* Decorative Elements - kleiner auf Mobile */}
-          <div className="absolute -bottom-10 sm:-bottom-20 -right-10 sm:-right-20 h-32 sm:h-64 w-32 sm:w-64 rounded-full bg-white/5 blur-2xl sm:blur-3xl"></div>
-          <div className="absolute -top-10 sm:-top-20 -left-10 sm:-left-20 h-24 sm:h-48 w-24 sm:w-48 rounded-full bg-white/5 blur-xl sm:blur-2xl"></div>
+          {/* Subtle decorative elements */}
+          <div className="absolute -bottom-20 -right-20 h-48 w-48 rounded-full bg-white/5 blur-3xl"></div>
+          <div className="absolute -top-20 -left-20 h-40 w-40 rounded-full bg-white/5 blur-2xl"></div>
         </div>
       </section>
 
@@ -151,57 +150,44 @@ export default async function HomePage() {
           
           {/* Main Feed */}
           <div className="xl:col-span-3">
-            {/* Meistgelesene Artikel - Horizontal Scroll auf Mobile */}
+            {/* Meistgelesene Artikel - Horizontal Scroll */}
             {mostRead && mostRead.length > 0 && (
               <section className="mb-10">
                 <div className="flex items-baseline justify-between mb-4">
-                  <h2 className="text-xl font-bold sm:text-2xl text-text">Meistgelesene Artikel</h2>
+                  <h2 className="font-bold" style={{ fontSize: 'var(--sw-h2)' }}>Meistgelesene Artikel</h2>
                   <span className="text-sm text-slate-400">Letzte 30 Tage</span>
                 </div>
-                {/* Mobile: Horizontal Scroll, Desktop: Grid */}
-                <div className="sm:hidden">
-                  <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-3 px-3">
-                    {mostRead.map((article: any, idx: number) => (
-                      <div key={article.id} className="relative snap-start min-w-[280px] max-w-[85vw]">
-                        {idx < 3 && (
-                          <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-7 w-7 grid place-content-center rounded-full shadow-lg">
-                            {idx + 1}
-                          </div>
-                        )}
-                        <ArticleCard a={article} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* Desktop: Grid */}
-                <div className="hidden sm:grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {/* Horizontal Scroll / Snap for all screens */}
+                <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
                   {mostRead.map((article: any, idx: number) => (
-                    <div key={article.id} className="relative">
+                    <article key={article.id} className="relative snap-start min-w-[85%] sm:min-w-[360px] flex-shrink-0">
                       {idx < 3 && (
                         <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-7 w-7 grid place-content-center rounded-full shadow-lg">
                           {idx + 1}
                         </div>
                       )}
                       <ArticleCard a={article} />
-                    </div>
+                    </article>
                   ))}
                 </div>
               </section>
             )}
 
-            {/* Latest Articles - Responsive Grid */}
+            {/* Neueste Artikel - Horizontal Scroll wie Meistgelesene */}
             <section>
               <div className="flex items-baseline justify-between mb-4">
-                <h2 className="text-xl font-bold sm:text-2xl text-text">Neueste Artikel</h2>
-                <Link href="/alle" className="text-sm font-medium text-blue-500 hover:text-blue-600">
+                <h2 className="font-bold" style={{ fontSize: 'var(--sw-h2)' }}>Neueste Artikel</h2>
+                <Link href="/alle" className="text-sm text-slate-400 hover:text-slate-300">
                   Alle anzeigen →
                 </Link>
               </div>
               
               {latest && latest.length > 0 ? (
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4">
                   {latest.map(article => (
-                    <ArticleCard key={article.id} a={article as any} />
+                    <article key={article.id} className="snap-start min-w-[85%] sm:min-w-[360px] flex-shrink-0">
+                      <ArticleCard a={article as any} />
+                    </article>
                   ))}
                 </div>
               ) : (

@@ -185,25 +185,25 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           </div>
         )}
 
-        {/* HEADLINE + EXCERPT + META zentriert - Mobile-First Typography */}
+        {/* HEADLINE + EXCERPT + META - Harmonisierte Typografie */}
         <header className="mx-auto mt-6 sm:mt-8 max-w-3xl">
           <div className="mb-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400">
               {category?.name || article.category_slug}
             </span>
           </div>
           
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-white">
+          <h1 className="font-extrabold tracking-tight text-white leading-tight" style={{ fontSize: 'var(--sw-h1)' }}>
             {article.title}
           </h1>
           
           {article.excerpt && (
-            <p className="mt-3 text-base sm:text-lg text-slate-300 leading-relaxed">
+            <p className="mt-3 sm:mt-4 lead text-slate-300">
               {article.excerpt}
             </p>
           )}
           
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-slate-500">
             <ArticleMeta
               date={article.published_at ? new Date(article.published_at).toLocaleDateString('de-DE') : ''}
               viewsLabel={`${views30d.toLocaleString('de-DE')} Aufrufe (30 Tage)`}
@@ -224,9 +224,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       {/* CONTENT + SIDEBAR - Mobile-First Layout */}
       <section className="mx-auto mt-8 sm:mt-10 max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex justify-center">
-          {/* TEXTSPALTE - Mobile-First Typography */}
+          {/* TEXTSPALTE - Harmonisierte Prose-Styles */}
           <div className="w-full max-w-3xl">
-            <article className="prose prose-sm sm:prose-base lg:prose-lg prose-invert prose-slate prose-p:leading-relaxed prose-headings:font-extrabold prose-headings:leading-tight prose-a:text-blue-400 max-w-none">
+            <article className="prose prose-invert prose-slate mt-8 max-w-none
+                             prose-p:leading-relaxed prose-headings:tracking-tight
+                             prose-h2:[font-size:var(--sw-h2)] prose-h2:leading-tight
+                             prose-h3:[font-size:var(--sw-h3)] prose-h3:leading-snug
+                             prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+                             prose-img:rounded-xl prose-img:shadow-lg
+                             prose-blockquote:border-l-blue-500 prose-blockquote:bg-slate-800/50
+                             prose-blockquote:rounded-r-xl prose-blockquote:px-6 prose-blockquote:py-4">
               <div dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }} />
             </article>
           </div>

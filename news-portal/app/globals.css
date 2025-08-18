@@ -13,6 +13,12 @@
   --text: #1F2937;
   --text-muted: #6B7280;
   --border: #E5E7EB;
+  
+  /* Fluid Typography Scales */
+  --sw-body: clamp(1rem, 0.94rem + 0.4vw, 1.0625rem);   /* ~16–17px */
+  --sw-h1: clamp(1.75rem, 1.3rem + 2.4vw, 2.25rem);     /* ~28–36px */
+  --sw-h2: clamp(1.375rem, 1.1rem + 1.4vw, 1.75rem);    /* ~22–28px */
+  --sw-h3: clamp(1.125rem, 1.03rem + 0.8vw, 1.375rem);  /* ~18–22px */
 }
 
 .dark {
@@ -41,6 +47,7 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -48,42 +55,52 @@ body {
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 16px;
+  font-size: var(--sw-body);
 }
 
-/* Typography */
+/* Typography with Fluid Scaling */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  line-height: 1.2;
   color: var(--text);
-  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: 1.5rem;
-  margin-top: 2.5rem;
-}
-
-h2 {
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  margin-bottom: 1.25rem;
-  margin-top: 2rem;
-}
-
-h3 {
-  font-size: clamp(1.25rem, 3vw, 1.875rem);
+  font-size: var(--sw-h1);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   margin-bottom: 1rem;
   margin-top: 1.5rem;
 }
 
+h2 {
+  font-size: var(--sw-h2);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  margin-bottom: 0.875rem;
+  margin-top: 1.25rem;
+}
+
+h3 {
+  font-size: var(--sw-h3);
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+  margin-top: 1rem;
+}
+
 p {
-  margin-bottom: 1rem;
+  margin: 0;
   color: var(--text);
-  line-height: 1.8;
+  line-height: 1.65;
+}
+
+/* Lead text for article excerpts */
+.lead {
+  color: rgb(148 163 184); /* slate-400 */
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: 1.75;
 }
 
 /* Button Styles with Accessibility */
@@ -464,11 +481,6 @@ input:focus, textarea:focus, select:focus {
     max-width: 100vw;
   }
   
-  /* Smaller font sizes on mobile */
-  body {
-    font-size: 14px;
-  }
-  
   /* Compact header on mobile */
   header {
     min-height: 56px;
@@ -476,7 +488,7 @@ input:focus, textarea:focus, select:focus {
   
   /* Hero section mobile optimization */
   .hero-section {
-    max-height: 50vh;
+    max-height: 60vh;
   }
   
   /* Ensure buttons don't overflow */
@@ -484,34 +496,5 @@ input:focus, textarea:focus, select:focus {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-}
-
-/* Extra small devices (phones < 475px) */
-@media (max-width: 475px) {
-  /* Even smaller padding and margins */
-  .container {
-    padding: 0 0.75rem;
-  }
-  
-  /* Compact navigation */
-  nav {
-    gap: 0.5rem;
-  }
-  
-  /* Smaller buttons on very small screens */
-  button, a.btn {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.75rem;
-  }
-  
-  /* Hero text adjustments */
-  h1 {
-    font-size: 1.25rem;
-    line-height: 1.3;
-  }
-  
-  p {
-    font-size: 0.875rem;
   }
 }
