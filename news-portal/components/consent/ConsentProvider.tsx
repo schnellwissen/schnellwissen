@@ -25,7 +25,17 @@ const ConsentContext = createContext<ConsentContextType | null>(null);
 export const useConsent = () => {
   const context = useContext(ConsentContext);
   if (!context) {
-    throw new Error('useConsent must be used within ConsentProvider');
+    // Return a safe default instead of throwing
+    return {
+      consent: null,
+      hasUserConsented: false,
+      updateConsent: () => {},
+      acceptAll: () => {},
+      acceptNecessary: () => {},
+      openSettings: () => {},
+      closeSettings: () => {},
+      isSettingsOpen: false
+    };
   }
   return context;
 };

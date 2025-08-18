@@ -14,19 +14,24 @@ export default function ConsentBanner() {
   } = useConsent();
   
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     // Banner zeigen, wenn noch keine explizite Zustimmung erfolgt ist
-    if (!hasUserConsented && consent) {
+    if (isMounted && !hasUserConsented && consent) {
       // Kleine Verzögerung für sanfte Animation
       const timer = setTimeout(() => setIsVisible(true), 500);
       return () => clearTimeout(timer);
     } else {
       setIsVisible(false);
     }
-  }, [hasUserConsented, consent]);
+  }, [hasUserConsented, consent, isMounted]);
 
-  if (!isVisible) return null;
+  if (!isMounted || !isVisible) return null;
 
   return (
     <>

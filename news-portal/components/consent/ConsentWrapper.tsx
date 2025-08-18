@@ -1,10 +1,13 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import ConsentProvider from './ConsentProvider';
-import ConsentBanner from './ConsentBanner';
-import ConsentModal from './ConsentModal';
-import Analytics from '@/components/analytics/Analytics';
+
+// Dynamically import consent components to prevent SSR issues
+const ConsentBanner = dynamic(() => import('./ConsentBanner'), { ssr: false });
+const ConsentModal = dynamic(() => import('./ConsentModal'), { ssr: false });
+const Analytics = dynamic(() => import('@/components/analytics/Analytics'), { ssr: false });
 
 interface ConsentWrapperProps {
   children: ReactNode;
@@ -14,9 +17,11 @@ export default function ConsentWrapper({ children }: ConsentWrapperProps) {
   return (
     <ConsentProvider>
       {children}
-      <ConsentBanner />
-      <ConsentModal />
-      <Analytics />
+      <Suspense fallback={null}>
+        <ConsentBanner />
+        <ConsentModal />
+        <Analytics />
+      </Suspense>
     </ConsentProvider>
   );
 }
