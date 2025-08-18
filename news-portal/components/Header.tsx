@@ -13,24 +13,26 @@ export default function Header({ user }: HeaderProps) {
   const initials = user?.email?.[0]?.toUpperCase() ?? "S";
   
   return (
-    <header className="sticky z-50 bg-slate-900/70 backdrop-blur supports-[backdrop-filter]:bg-slate-900/60 border-b border-white/10" style={{ top: 'env(safe-area-inset-top)' }}>
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-3 sm:gap-4 py-3">
+    <header className="sticky z-50 bg-slate-900/90 backdrop-blur supports-[backdrop-filter]:bg-slate-900/80 border-b border-white/10" style={{ top: 'env(safe-area-inset-top)' }}>
+      <div className="mx-auto max-w-screen-xl px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-2 py-2 sm:py-3">
           <Navigation />
           
           {!user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
               <Link 
                 href="/login" 
-                className="h-10 px-4 flex items-center text-sm font-medium text-white/90 hover:text-white transition-colors border border-white/20 rounded-lg hover:bg-white/10 backdrop-blur"
+                className="h-9 sm:h-10 px-2 sm:px-4 flex items-center text-xs sm:text-sm font-medium text-white/90 hover:text-white transition-colors border border-white/20 rounded-lg hover:bg-white/10 backdrop-blur whitespace-nowrap"
               >
-                Anmelden
+                <span className="hidden xs:inline">Anmelden</span>
+                <span className="xs:hidden">Login</span>
               </Link>
               <Link 
                 href="/register" 
-                className="h-10 px-4 flex items-center text-sm font-semibold bg-white/20 text-white rounded-lg hover:bg-white/30 backdrop-blur transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50"
+                className="h-9 sm:h-10 px-2 sm:px-4 flex items-center text-xs sm:text-sm font-semibold bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 whitespace-nowrap"
               >
-                Registrieren
+                <span className="hidden xs:inline">Registrieren</span>
+                <span className="xs:hidden">Sign up</span>
               </Link>
             </div>
           ) : (

@@ -109,43 +109,44 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* Hero Section - Mobile-First, zentriert & kompakt */}
-      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg shadow-black/10">
-          <div className="mx-auto max-w-screen-md px-4 py-10 sm:py-12 md:py-16 text-center">
-            <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl md:text-4xl leading-tight">
-              Deine tägliche Dosis Wissen – kompakt & fundiert
+      {/* Hero Section - Mobile optimiert, kompakter */}
+      <section className="mx-auto max-w-screen-xl px-3 sm:px-6 lg:px-8 py-3 sm:py-6 md:py-8">
+        <div className="relative overflow-hidden rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg">
+          <div className="mx-auto max-w-screen-md px-4 sm:px-6 py-6 sm:py-10 md:py-14 text-center">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight">
+              Deine tägliche Dosis Wissen
+              <span className="hidden sm:inline"> – kompakt & fundiert</span>
             </h1>
-            <p className="mt-3 text-sm text-white/90 sm:mt-4 sm:text-base md:text-lg leading-relaxed">
+            <p className="mt-2 sm:mt-3 text-xs sm:text-sm md:text-base text-white/90 leading-relaxed max-w-lg mx-auto">
               Expertenartikel zu Gesundheit, Finanzen, Technologie und mehr.
             </p>
             
-            {/* Suche: mobil stack, ab md inline */}
-            <form action="/suche" method="get" className="mx-auto mt-6 grid gap-3 sm:max-w-lg md:grid-cols-[1fr_auto]">
+            {/* Suche: kompakter auf Mobile */}
+            <form action="/suche" method="get" className="mx-auto mt-4 sm:mt-6 grid gap-2 sm:gap-3 max-w-sm sm:max-w-lg md:grid-cols-[1fr_auto]">
               <input
                 type="search"
                 name="q"
-                placeholder="Artikel suchen …"
-                className="h-12 w-full rounded-xl bg-white/95 px-4 text-slate-900 placeholder-slate-500 outline-none focus:ring-2 focus:ring-white backdrop-blur"
+                placeholder="Artikel suchen…"
+                className="h-10 sm:h-12 w-full rounded-lg sm:rounded-xl bg-white/95 px-3 sm:px-4 text-sm sm:text-base text-slate-900 placeholder-slate-500 outline-none focus:ring-2 focus:ring-white backdrop-blur"
                 minLength={2}
                 required
               />
               <button
                 type="submit"
-                className="h-12 rounded-xl bg-white/20 px-6 font-semibold text-white backdrop-blur hover:bg-white/30 transition-all md:justify-self-start"
+                className="h-10 sm:h-12 rounded-lg sm:rounded-xl bg-white/20 px-4 sm:px-6 font-semibold text-sm sm:text-base text-white backdrop-blur hover:bg-white/30 transition-all md:justify-self-start"
               >
                 Suchen
               </button>
             </form>
           </div>
-          {/* Decorative Elements */}
-          <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-white/5 blur-3xl"></div>
-          <div className="absolute -top-20 -left-20 h-48 w-48 rounded-full bg-white/5 blur-2xl"></div>
+          {/* Decorative Elements - kleiner auf Mobile */}
+          <div className="absolute -bottom-10 sm:-bottom-20 -right-10 sm:-right-20 h-32 sm:h-64 w-32 sm:w-64 rounded-full bg-white/5 blur-2xl sm:blur-3xl"></div>
+          <div className="absolute -top-10 sm:-top-20 -left-10 sm:-left-20 h-24 sm:h-48 w-24 sm:w-48 rounded-full bg-white/5 blur-xl sm:blur-2xl"></div>
         </div>
       </section>
 
       {/* Main Content Area - Mobile-First Container */}
-      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-screen-xl px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 md:gap-8">
           
           {/* Main Feed */}
@@ -159,9 +160,9 @@ export default async function HomePage() {
                 </div>
                 {/* Mobile: Horizontal Scroll, Desktop: Grid */}
                 <div className="sm:hidden">
-                  <div className="flex gap-4 overflow-x-auto px-1 pb-4 snap-x snap-mandatory scrollbar-hide">
+                  <div className="flex gap-3 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide -mx-3 px-3">
                     {mostRead.map((article: any, idx: number) => (
-                      <div key={article.id} className="relative snap-start min-w-[85%] sm:min-w-[360px]">
+                      <div key={article.id} className="relative snap-start min-w-[280px] max-w-[85vw]">
                         {idx < 3 && (
                           <div className="absolute top-3 left-3 z-10 bg-gradient-to-br from-yellow-400 to-orange-500 text-white text-xs font-bold h-7 w-7 grid place-content-center rounded-full shadow-lg">
                             {idx + 1}

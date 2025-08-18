@@ -455,3 +455,63 @@ input:focus, textarea:focus, select:focus {
     @apply left-2;
   }
 }
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+  
+  /* Smaller font sizes on mobile */
+  body {
+    font-size: 14px;
+  }
+  
+  /* Compact header on mobile */
+  header {
+    min-height: 56px;
+  }
+  
+  /* Hero section mobile optimization */
+  .hero-section {
+    max-height: 50vh;
+  }
+  
+  /* Ensure buttons don't overflow */
+  button, a {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Extra small devices (phones < 475px) */
+@media (max-width: 475px) {
+  /* Even smaller padding and margins */
+  .container {
+    padding: 0 0.75rem;
+  }
+  
+  /* Compact navigation */
+  nav {
+    gap: 0.5rem;
+  }
+  
+  /* Smaller buttons on very small screens */
+  button, a.btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Hero text adjustments */
+  h1 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+  
+  p {
+    font-size: 0.875rem;
+  }
+}

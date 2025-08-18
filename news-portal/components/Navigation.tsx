@@ -56,29 +56,29 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="flex items-center flex-1">
-      <div className="flex items-center gap-6 flex-1">
-        {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 text-2xl font-bold text-primary dark:text-blue-400">
-          <div className="w-10 h-10 bg-primary dark:bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">SW</span>
+    <nav className="flex items-center flex-1 min-w-0">
+      <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+        {/* Logo - kompakter auf Mobile */}
+        <Link href="/" className="flex items-center flex-shrink-0 text-white">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-sm sm:text-xl">SW</span>
           </div>
-          <span className="hidden sm:inline">Schnell Wissen</span>
+          <span className="hidden lg:inline ml-2 text-lg font-bold">Schnell Wissen</span>
         </Link>
 
-        {/* Search Box */}
-        <div className="flex-1 max-w-xl mx-4">
+        {/* Search Box - nur auf größeren Screens */}
+        <div className="hidden md:block flex-1 max-w-xl mx-2">
           <SearchBox />
         </div>
 
-        {/* Navigation Items */}
-        <div className="flex items-center space-x-2">
-          <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-blue-900/20 transition-all">
+        {/* Navigation Items - auf Mobile ausblenden oder kleiner */}
+        <div className="hidden sm:flex items-center">
+          <Link href="/" className="text-white/80 hover:text-white font-medium px-2 sm:px-3 py-1 sm:py-2 text-sm rounded-md hover:bg-white/10 transition-all">
             Startseite
           </Link>
           
           {isAdmin && (
-            <Link href="/admin" className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 font-medium px-3 py-2 rounded-md hover:bg-primary/10 dark:hover:bg-blue-900/20 transition-all">
+            <Link href="/admin" className="text-white/80 hover:text-white font-medium px-2 sm:px-3 py-1 sm:py-2 text-sm rounded-md hover:bg-white/10 transition-all">
               Admin
             </Link>
           )}
