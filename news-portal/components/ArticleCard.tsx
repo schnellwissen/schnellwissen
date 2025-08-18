@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getArticlePathFromArticle } from '@/lib/paths';
 import BookmarkButton from './BookmarkButton';
 
@@ -25,33 +26,35 @@ interface ArticleCardProps {
 export default function ArticleCard({ a }: ArticleCardProps) {
   return (
     <div className="relative group">
-      <article className="card overflow-hidden h-full hover:shadow-lg transition-shadow duration-300">
+      <article className="card overflow-hidden h-full hover:shadow-lg transition-shadow duration-300 rounded-2xl">
         <Link href={getArticlePathFromArticle(a)} className="block">
           {a.cover_image_url && (
-            <div className="aspect-video relative overflow-hidden bg-gray-100 dark:bg-gray-800">
-              <img 
+            <div className="aspect-[16/9] relative overflow-hidden bg-gray-100 dark:bg-gray-800">
+              <Image 
                 src={a.cover_image_url}
                 alt={a.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
           )}
         
-        <div className="p-5">
+        <div className="p-4 sm:p-5">
           {a.categories && (
             <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary mb-3">
               {a.categories.name}
             </span>
           )}
           
-          <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+          <h3 className="font-bold text-base sm:text-lg text-gray-900 dark:text-gray-100 mb-2 group-hover:text-primary dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-tight">
             {a.title}
           </h3>
           
           {a.excerpt && (
-            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4">
+            <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 sm:line-clamp-3 mb-4 leading-relaxed">
               {a.excerpt}
             </p>
           )}
@@ -82,10 +85,10 @@ export default function ArticleCard({ a }: ArticleCardProps) {
       </article>
       
       {/* Bookmark button positioned outside the link */}
-      <div className="absolute top-2 right-2 z-20">
+      <div className="absolute top-3 right-3 z-20">
         <BookmarkButton 
           articleId={a.id} 
-          className="!p-2 !rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-md hover:shadow-lg hover:scale-110 transition-all"
+          className="!p-2.5 !min-w-[44px] !min-h-[44px] !rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-md hover:shadow-lg hover:scale-110 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           showText={false}
         />
       </div>

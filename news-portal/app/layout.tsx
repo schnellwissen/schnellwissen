@@ -21,6 +21,7 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: "Schnell Wissen",
   description: "Ihre zentrale Anlaufstelle für aktuelle Nachrichten und Wissen",
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
 };
 
 export default async function RootLayout({

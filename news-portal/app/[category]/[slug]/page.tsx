@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { supabaseServer } from '@/lib/supabase/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import { slugify } from '@/lib/slugify';
 import ArticleViewTracker from './ArticleViewTracker';
 import ShareBar from '@/components/ShareBar';
@@ -153,9 +154,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     <main className="min-h-screen bg-bg">
       <ArticleViewTracker articleId={article.id} />
       
-      {/* Navigation Breadcrumb */}
-      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-4">
-        <nav className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
+      {/* Navigation Breadcrumb - Mobile-First */}
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+        <nav className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
           <Link href="/" className="hover:text-primary dark:hover:text-blue-400">Home</Link>
           <span>/</span>
           <Link href={`/kategorie/${article.category_slug}`} className="hover:text-primary dark:hover:text-blue-400">
@@ -166,34 +167,38 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </nav>
       </div>
 
-      {/* STAGE - Cover und Header */}
-      <section className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Cover Image */}
+      {/* STAGE - Cover und Header - Mobile-First */}
+      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        {/* Cover Image - Responsive with Next/Image */}
         {article.cover_image_url && (
-          <div className="pt-6">
-            <img 
-              src={`/api/img?u=${encodeURIComponent(article.cover_image_url)}&kind=cover`}
-              alt={article.title}
-              className="w-full rounded-2xl object-cover shadow-sm ring-1 ring-gray-200 dark:ring-gray-700"
-              style={{ maxHeight: '500px', objectFit: 'cover' }}
-            />
+          <div className="pt-4 sm:pt-6">
+            <div className="relative aspect-[16/9] sm:aspect-[21/9] max-h-[400px] sm:max-h-[500px] overflow-hidden rounded-xl sm:rounded-2xl">
+              <Image
+                src={`/api/img?u=${encodeURIComponent(article.cover_image_url)}&kind=cover`}
+                alt={article.title}
+                fill
+                className="object-cover shadow-sm ring-1 ring-gray-200 dark:ring-gray-700"
+                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 90vw, 1200px"
+                priority
+              />
+            </div>
           </div>
         )}
 
-        {/* HEADLINE + EXCERPT + META zentriert */}
-        <header className="mx-auto mt-8 max-w-3xl">
+        {/* HEADLINE + EXCERPT + META zentriert - Mobile-First Typography */}
+        <header className="mx-auto mt-6 sm:mt-8 max-w-3xl">
           <div className="mb-4">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
               {category?.name || article.category_slug}
             </span>
           </div>
           
-          <h1 className="text-3xl font-extrabold leading-tight text-gray-900 dark:text-gray-100 sm:text-4xl">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-gray-900 dark:text-gray-100">
             {article.title}
           </h1>
           
           {article.excerpt && (
-            <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
+            <p className="mt-3 text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
               {article.excerpt}
             </p>
           )}
@@ -216,12 +221,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </header>
       </section>
 
-      {/* CONTENT + SIDEBAR */}
-      <section className="mx-auto mt-10 w-full px-4 sm:px-6 lg:px-8" style={{ maxWidth: '1600px' }}>
+      {/* CONTENT + SIDEBAR - Mobile-First Layout */}
+      <section className="mx-auto mt-8 sm:mt-10 max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex justify-center">
-          {/* TEXTSPALTE - zentriert */}
+          {/* TEXTSPALTE - Mobile-First Typography */}
           <div className="w-full max-w-3xl">
-            <article className="prose dark:prose-invert prose-slate dark:prose-gray prose-p:leading-relaxed prose-headings:font-extrabold prose-a:text-primary max-w-none">
+            <article className="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert prose-slate dark:prose-gray prose-p:leading-relaxed prose-headings:font-extrabold prose-headings:leading-tight prose-a:text-primary max-w-none">
               <div dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }} />
             </article>
           </div>
@@ -244,8 +249,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
       </section>
 
-      {/* Mobile Sidebar - nur auf kleinen Bildschirmen */}
-      <section className="lg:hidden mx-auto mt-8 w-full max-w-3xl px-4 sm:px-6">
+      {/* Mobile Sidebar - Mobile-First Container */}
+      <section className="xl:hidden mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8">
         {relatedArticles && relatedArticles.length > 0 && (
           <RelatedSidebar articles={relatedArticles} />
         )}
@@ -286,14 +291,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         }}
       />
 
-      {/* Article Footer */}
-      <footer className="container mx-auto px-4 py-12">
+      {/* Article Footer with Safe Area */}
+      <footer className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))' }}>
         <div className="max-w-4xl mx-auto">
           <div className="border-t border-gray-200 pt-8">
             <div className="flex items-center justify-between">
               <Link 
                 href="/" 
-                className="btn-secondary inline-flex items-center"
+                className="btn-secondary inline-flex items-center min-h-[44px] px-4 py-2.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

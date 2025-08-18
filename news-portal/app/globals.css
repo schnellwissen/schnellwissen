@@ -86,25 +86,32 @@ p {
   line-height: 1.8;
 }
 
-/* Button Styles */
+/* Button Styles with Accessibility */
 .btn-primary {
   @apply bg-primary text-white hover:bg-primary-dark rounded-lg px-6 py-3 shadow-md hover:shadow-lg transition-all duration-200 font-medium;
   @apply dark:bg-blue-600 dark:hover:bg-blue-700;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  @apply min-h-[44px] flex items-center justify-center;
 }
 
 .btn-secondary {
   @apply bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg px-6 py-3 transition-all duration-200 font-medium;
   @apply dark:bg-gray-800 dark:text-blue-400 dark:border-blue-400 dark:hover:bg-blue-600 dark:hover:text-white;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  @apply min-h-[44px] flex items-center justify-center;
 }
 
 .btn-ghost {
   @apply text-primary hover:bg-primary hover:bg-opacity-10 rounded-lg px-4 py-2 transition-all duration-200;
   @apply dark:text-blue-400 dark:hover:bg-blue-900 dark:hover:bg-opacity-30;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  @apply min-h-[44px] flex items-center justify-center;
 }
 
-/* Link Styles */
+/* Link Styles with Accessibility */
 .link {
   @apply text-primary hover:text-primary-dark underline-offset-2 transition-colors;
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary rounded;
 }
 
 a {
@@ -115,6 +122,10 @@ a {
 
 a:hover {
   color: var(--primary-dark);
+}
+
+a:focus-visible {
+  @apply outline outline-2 outline-offset-2 outline-primary rounded;
 }
 
 /* Card Styles */
@@ -368,5 +379,69 @@ input:focus, textarea:focus, select:focus {
   .dark input::placeholder,
   .dark textarea::placeholder {
     @apply text-gray-500;
+  }
+}
+
+/* Mobile-First Utility Classes */
+@layer utilities {
+  /* Safe Area Support */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Touch Target Sizing */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+  
+  /* Mobile-First Typography */
+  .text-mobile-sm {
+    @apply text-sm sm:text-base;
+  }
+  
+  .text-mobile-base {
+    @apply text-base sm:text-lg;
+  }
+  
+  .text-mobile-lg {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+  
+  .text-mobile-xl {
+    @apply text-xl sm:text-2xl md:text-3xl;
+  }
+  
+  .text-mobile-2xl {
+    @apply text-2xl sm:text-3xl md:text-4xl;
+  }
+  
+  .text-mobile-3xl {
+    @apply text-3xl sm:text-4xl md:text-5xl;
+  }
+  
+  /* Mobile-First Spacing */
+  .spacing-mobile {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Skip Link for Accessibility */
+  .skip-link {
+    @apply absolute left-[-9999px] top-2 z-[9999] rounded-md bg-primary px-4 py-2 text-white;
+  }
+  
+  .skip-link:focus {
+    @apply left-2;
   }
 }

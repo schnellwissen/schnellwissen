@@ -109,25 +109,25 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen bg-bg">
-      {/* Modern Hero Section */}
-      <section className="container mx-auto px-4 py-8 md:py-12">
-        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-primary-dark via-primary to-primary-light text-white p-10 md:p-16 shadow-soft">
-          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 max-w-3xl leading-tight tracking-tight">
+      {/* Modern Hero Section - Mobile-First */}
+      <section className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-10 sm:py-12 md:py-16">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-dark via-primary to-primary-light text-white p-8 sm:p-12 md:p-16 shadow-soft">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 max-w-3xl leading-tight tracking-tight">
             Deine tägliche Dosis Wissen – kompakt & fundiert
           </h1>
-          <p className="text-lg md:text-xl max-w-2xl mb-8 opacity-90">
+          <p className="text-base sm:text-lg md:text-xl max-w-2xl mb-6 sm:mb-8 opacity-90">
             Expertenartikel zu Gesundheit, Finanzen, Technologie und mehr.
           </p>
-          <form action="/suche" method="get" className="flex flex-col sm:flex-row gap-3 max-w-xl">
+          <form action="/suche" method="get" className="flex flex-col md:flex-row gap-3 max-w-xl">
             <input 
               type="search"
               name="q"
-              className="flex-1 rounded-lg px-5 py-3 text-text placeholder:text-text-muted focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
+              className="flex-1 rounded-lg px-4 sm:px-5 py-3 min-h-[44px] text-text placeholder:text-text-muted focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary"
               placeholder="Artikel suchen …" 
               minLength={2}
               required
             />
-            <button type="submit" className="bg-white text-primary hover:bg-gray-100 font-semibold rounded-lg px-8 py-3 transition-all shadow-md hover:shadow-lg">
+            <button type="submit" className="bg-white text-primary hover:bg-gray-100 font-semibold rounded-lg px-6 sm:px-8 py-3 min-h-[44px] transition-all shadow-md hover:shadow-lg">
               Suchen
             </button>
           </form>
@@ -136,8 +136,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Main Content Area */}
-      <div className="container mx-auto px-4 py-8">
+      {/* Main Content Area - Mobile-First Container */}
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 md:gap-8">
           
           {/* Main Feed */}
@@ -154,7 +154,7 @@ export default async function HomePage() {
                     <span>Letzte 30 Tage</span>
                   </div>
                 </div>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   {mostRead.map((article: any, idx: number) => (
                     <div key={article.id} className="relative">
                       {/* Kleines Rank-Badge als Overlay */}
@@ -180,7 +180,7 @@ export default async function HomePage() {
               </div>
               
               {latest && latest.length > 0 ? (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   {latest.map(article => (
                     <ArticleCard key={article.id} a={article as any} />
                   ))}
@@ -266,9 +266,9 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="mt-16 border-t border-gray-200 bg-white">
-        <div className="container mx-auto px-4 py-8">
+      {/* Footer with Safe Area Support */}
+      <footer className="mt-16 border-t border-gray-200 bg-white" style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))' }}>
+        <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-sm text-text-muted">
             <div className="mb-2">
               © 2024 SchnellWissen. Alle Rechte vorbehalten.

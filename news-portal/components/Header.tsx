@@ -13,29 +13,29 @@ export default function Header({ user }: HeaderProps) {
   const initials = user?.email?.[0]?.toUpperCase() ?? "S";
   
   return (
-    <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-700">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+    <header className="sticky z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-700" style={{ top: 'env(safe-area-inset-top)' }}>
+      <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center min-h-[56px] sm:min-h-[64px] py-2">
           <Navigation />
           
           {!user ? (
             <div className="flex items-center gap-2">
               <Link 
                 href="/login" 
-                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="px-3 sm:px-4 py-2.5 min-h-[44px] flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
               >
                 Anmelden
               </Link>
               <Link 
                 href="/register" 
-                className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-3 sm:px-4 py-2.5 min-h-[44px] flex items-center text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
               >
                 Registrieren
               </Link>
             </div>
           ) : (
             <div className="relative group">
-              <button className="flex items-center gap-2 rounded-full px-2 py-1 ring-1 ring-gray-200 dark:ring-gray-700 bg-white dark:bg-gray-800 hover:ring-gray-300 dark:hover:ring-gray-600 transition-all">
+              <button className="flex items-center gap-2 rounded-full px-2 py-1 min-h-[44px] ring-1 ring-gray-200 dark:ring-gray-700 bg-white dark:bg-gray-800 hover:ring-gray-300 dark:hover:ring-gray-600 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
                 <span className="grid h-8 w-8 place-content-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white text-sm font-semibold">
                   {initials}
                 </span>
