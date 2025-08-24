@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "Schnell Wissen",
   description: "Ihre zentrale Anlaufstelle für aktuelle Nachrichten und Wissen",
   viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+  other: {
+    "google-adsense-account": "ca-pub-5441629263234394"
+  }
 };
 
 export default async function RootLayout({
@@ -37,6 +40,13 @@ export default async function RootLayout({
   
   return (
     <html lang="de" className={themeCookie === "dark" ? "dark" : ""} suppressHydrationWarning>
+      <head>
+        <script 
+          async 
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5441629263234394"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`${inter.variable} ${robotoMono.variable} antialiased`}
       >
