@@ -193,12 +193,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </span>
           </div>
           
-          <h1 className="font-extrabold tracking-tight text-white leading-tight" style={{ fontSize: 'var(--sw-h1)' }}>
+          <h1 className="font-extrabold tracking-tight text-gray-900 dark:text-white leading-tight" style={{ fontSize: 'var(--sw-h1)' }}>
             {article.title}
           </h1>
           
           {article.excerpt && (
-            <p className="mt-3 sm:mt-4 lead text-slate-300">
+            <p className="mt-3 sm:mt-4 lead text-gray-600 dark:text-slate-300">
               {article.excerpt}
             </p>
           )}
@@ -226,14 +226,17 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="relative flex justify-center">
           {/* TEXTSPALTE - Harmonisierte Prose-Styles */}
           <div className="w-full max-w-3xl">
-            <article className="prose prose-invert prose-slate mt-8 max-w-none
+            <article className="prose prose-lg prose-gray dark:prose-invert mt-8 max-w-none
                              prose-p:leading-relaxed prose-headings:tracking-tight
-                             prose-h2:[font-size:var(--sw-h2)] prose-h2:leading-tight
-                             prose-h3:[font-size:var(--sw-h3)] prose-h3:leading-snug
-                             prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+                             prose-h2:[font-size:var(--sw-h2)] prose-h2:leading-tight prose-h2:text-gray-900 dark:prose-h2:text-white
+                             prose-h3:[font-size:var(--sw-h3)] prose-h3:leading-snug prose-h3:text-gray-900 dark:prose-h3:text-white
+                             prose-p:text-gray-700 dark:prose-p:text-slate-300
+                             prose-strong:text-gray-900 dark:prose-strong:text-white
+                             prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
                              prose-img:rounded-xl prose-img:shadow-lg
-                             prose-blockquote:border-l-blue-500 prose-blockquote:bg-slate-800/50
-                             prose-blockquote:rounded-r-xl prose-blockquote:px-6 prose-blockquote:py-4">
+                             prose-blockquote:border-l-blue-500 prose-blockquote:bg-gray-50 dark:prose-blockquote:bg-slate-800/50
+                             prose-blockquote:rounded-r-xl prose-blockquote:px-6 prose-blockquote:py-4
+                             prose-li:text-gray-700 dark:prose-li:text-slate-300">
               <div dangerouslySetInnerHTML={{ __html: article.content_html || article.content || article.html || '' }} />
             </article>
           </div>
