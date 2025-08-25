@@ -29,16 +29,21 @@ export default async function ArticlesListPage() {
       title, 
       slug, 
       category_slug,
+      category_id,
       status, 
       views, 
       published_at,
-      cover_image_url,
-      categories (
-        name,
-        slug
-      )
+      cover_image_url
     `)
     .order('published_at', { ascending: false });
+
+  // Get categories separately
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('id, name, slug');
+
+  // Create category map
+  const categoryMap = new Map(categories?.map(cat => [cat.id, cat]) || []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -88,13 +93,13 @@ export default async function ArticlesListPage() {
                         className="h-10 w-10 object-cover rounded"
                       />
                     )}
-                    <Link href={`/${article.category_slug || article.categories?.[0]?.slug || 'uncategorized'}/${article.slug}`} className="text-blue-600 hover:underline">
+                    <Link href={`/${article.category_slug || 'uncategorized'}/${article.slug}`} className="text-blue-600 hover:underline">
                       {article.title}
                     </Link>
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {article.categories?.[0]?.name || '-'}
+                  {categoryMap.get(article.category_id)?.name || '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${

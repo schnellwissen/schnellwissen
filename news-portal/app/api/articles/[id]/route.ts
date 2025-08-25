@@ -75,11 +75,50 @@ export async function PUT(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Check if user is admin
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .single();
+
+    if (!profile?.is_admin) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+
     const body = await request.json();
+    
+    // Get category slug if category_id is provided
+    let category_slug = body.category_slug;
+    if (body.category_id && !category_slug) {
+      const { data: category } = await supabase
+        .from('categories')
+        .select('slug')
+        .eq('id', body.category_id)
+        .single();
+      category_slug = category?.slug;
+    }
+
+    // Prepare update data
+    const updateData: any = {
+      title: body.title,
+      slug: body.slug,
+      excerpt: body.excerpt,
+      category_id: body.category_id,
+      category_slug: category_slug,
+      cover_image_url: body.cover_image_url,
+      status: body.status || 'published',
+      updated_at: new Date().toISOString()
+    };
+
+    // Add content with correct column name
+    if (body.content !== undefined) {
+      updateData.content_html = body.content;
+    }
     
     const { data: article, error } = await supabase
       .from('articles')
-      .update(body)
+      .update(updateData)
       .eq('id', params.id)
       .select()
       .single();
