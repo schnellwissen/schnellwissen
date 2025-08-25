@@ -5,6 +5,9 @@ export async function GET() {
   try {
     const sb = await supabaseServer();
     
+    // TEMPORARY: No auth check for debugging
+    // TODO: Remove this after fixing articles
+    
     // Get all articles
     const { data: articles, error } = await sb
       .from('articles')
