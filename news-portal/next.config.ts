@@ -27,6 +27,10 @@ const nextConfig: NextConfig = {
   swcMinify: true,
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
+    // Entferne React-Eigenschaften im Production Build
+    reactRemoveProperties: process.env.NODE_ENV === "production",
+    // Entferne Test-IDs im Production Build
+    removeTestIds: true,
   },
 
   // Performance Optimierungen

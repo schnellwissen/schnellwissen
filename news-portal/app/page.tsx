@@ -5,8 +5,8 @@ import HorizontalCarousel from '@/components/HorizontalCarousel';
 import { getArticlePathFromArticle } from '@/lib/paths';
 import FooterConsentClient from '@/components/FooterConsentClient';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Incremental Static Regeneration für bessere Performance
+export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function HomePage() {
   const sb = await supabaseServer();
@@ -166,7 +166,7 @@ export default async function HomePage() {
                           {idx + 1}
                         </div>
                       )}
-                      <ArticleCard a={article} />
+                      <ArticleCard a={article} priority={idx === 0} />
                     </div>
                   ))}
                 </HorizontalCarousel>

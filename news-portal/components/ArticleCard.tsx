@@ -3,16 +3,17 @@ import Image from 'next/image';
 import { getArticlePathFromArticle } from '@/lib/paths';
 import BookmarkButton from './BookmarkButton';
 
-// Optimiere Pexels-Bild-URLs für mobile Geräte
+// Optimiere Pexels-Bild-URLs für exakte mobile Dimensionen
 function getOptimizedImageUrl(url: string): string {
   if (!url) return url;
   
-  // Für Pexels-Bilder: Verwende kleinere Auflösungen für mobile Geräte
+  // Für Pexels-Bilder: Verwende exakte Größen für mobile Geräte (279x186)
   if (url.includes('pexels.com')) {
     // Entferne bestehende Größenparameter
     const baseUrl = url.split('?')[0];
-    // Füge optimierte Größe hinzu (w=600 für mobile Ansicht)
-    return `${baseUrl}?w=600&h=400&fit=crop&auto=compress`;
+    // Verwende exakte Dimensionen wie von PageSpeed empfohlen
+    // Mit auto=compress&fm=webp für bessere Kompression
+    return `${baseUrl}?w=279&h=186&fit=crop&auto=compress&fm=webp&q=80`;
   }
   
   return url;
@@ -36,9 +37,10 @@ interface ArticleCardProps {
       image_path: string;
     };
   };
+  priority?: boolean; // Für LCP-Optimierung
 }
 
-export default function ArticleCard({ a }: ArticleCardProps) {
+export default function ArticleCard({ a, priority = false }: ArticleCardProps) {
   return (
     <article className="snap-center w-full relative group overflow-hidden rounded-xl bg-slate-800/80 ring-1 ring-white/5 hover:ring-white/10 transition-all">
       <Link href={getArticlePathFromArticle(a)} className="block">
@@ -50,10 +52,12 @@ export default function ArticleCard({ a }: ArticleCardProps) {
               alt={a.title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 480px) 279px, (max-width: 768px) 300px, (max-width: 1024px) 350px, 400px"
-              priority={false}
-              loading="lazy"
-              quality={75}
+              sizes="279px"
+              priority={priority}
+              loading={priority ? "eager" : "lazy"}
+              quality={80}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwAA8A/9k="
             />
             {/* Gradient-Overlay für besseren Icon-Kontrast */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20" />

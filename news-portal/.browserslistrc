@@ -1,17 +1,23 @@
-# Nur moderne Browser unterstützen (keine alten IE-Versionen)
-# Dies reduziert die Anzahl der Polyfills erheblich
+# Nur sehr moderne Browser (2022+)
+# Keine Polyfills für alte Features
 
-# Desktop
-Chrome >= 90
-Firefox >= 88
-Safari >= 14
-Edge >= 90
+# Desktop (letzten 2 Jahre)
+Chrome >= 100
+Firefox >= 100
+Safari >= 15.4
+Edge >= 100
 
-# Mobile
-iOS >= 14
-Android >= 90
-ChromeAndroid >= 90
+# Mobile (moderne Smartphones)
+iOS >= 15.4
+Android >= 100
+ChromeAndroid >= 100
+Samsung >= 19
 
-# Keine IE-Unterstützung
+# Explizit ausschließen
 not IE 11
 not dead
+not op_mini all
+not opera < 90
+not safari < 15.4
+not firefox < 100
+not chrome < 100

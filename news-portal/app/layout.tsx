@@ -49,6 +49,11 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         
+        {/* Critical CSS inline to prevent render blocking */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          *{margin:0;padding:0;box-sizing:border-box}html{-webkit-text-size-adjust:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif}body{margin:0;min-height:100vh;background:#0f172a;color:#e2e8f0;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.min-h-screen{min-height:100vh}.bg-bg{background-color:var(--bg,#0f172a)}.mx-auto{margin-left:auto;margin-right:auto}.max-w-screen-xl{max-width:1280px}header{position:sticky;top:0;z-index:50;background:rgba(15,23,42,0.9);backdrop-filter:blur(12px)}img[loading="lazy"]{opacity:0;transition:opacity .3s}img[loading="lazy"].loaded{opacity:1}.h-\\[136px\\]{height:136px}@media(prefers-color-scheme:dark){:root{--bg:#0f172a;--text:#e2e8f0}}.dark{--bg:#0f172a;--text:#e2e8f0}
+        ` }} />
+        
         <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5441629263234394"
