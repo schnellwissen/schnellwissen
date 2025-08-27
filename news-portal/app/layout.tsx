@@ -41,6 +41,14 @@ export default async function RootLayout({
   return (
     <html lang="de" className={themeCookie === "dark" ? "dark" : ""} suppressHydrationWarning>
       <head>
+        {/* Resource Hints für externe Domains */}
+        <link rel="preconnect" href="https://images.pexels.com" />
+        <link rel="dns-prefetch" href="https://images.pexels.com" />
+        <link rel="preconnect" href="https://uabmwhtoimelqpuhyluz.supabase.co" />
+        <link rel="dns-prefetch" href="https://uabmwhtoimelqpuhyluz.supabase.co" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        
         <script 
           async 
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5441629263234394"

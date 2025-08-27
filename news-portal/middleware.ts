@@ -31,6 +31,28 @@ export async function middleware(req: NextRequest) {
   // Create response that will be modified
   let response = NextResponse.next();
   
+  // Performance & Security Headers
+  response.headers.set('X-DNS-Prefetch-Control', 'on');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Cache-Control Headers für bessere Performance
+  if (pathname.match(/\.(jpg|jpeg|png|gif|webp|avif|ico|svg)$/i)) {
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+  } else if (pathname.match(/\.(woff|woff2|ttf|otf|eot)$/i)) {
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+  } else if (pathname.startsWith('/_next/static/')) {
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+  } else if (!pathname.includes('.') && !pathname.startsWith('/api/')) {
+    // HTML pages - kurzer Cache mit stale-while-revalidate
+    response.headers.set('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
+  } else if (pathname.startsWith('/api/')) {
+    // API responses - kein Cache
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate');
+  }
+  
   // Check if path requires protection
   const isProtectedPath = PROTECTED_PATHS.some(path => 
     pathname === path || pathname.startsWith(path + '/')

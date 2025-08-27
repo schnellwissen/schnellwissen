@@ -3,6 +3,21 @@ import Image from 'next/image';
 import { getArticlePathFromArticle } from '@/lib/paths';
 import BookmarkButton from './BookmarkButton';
 
+// Optimiere Pexels-Bild-URLs für mobile Geräte
+function getOptimizedImageUrl(url: string): string {
+  if (!url) return url;
+  
+  // Für Pexels-Bilder: Verwende kleinere Auflösungen für mobile Geräte
+  if (url.includes('pexels.com')) {
+    // Entferne bestehende Größenparameter
+    const baseUrl = url.split('?')[0];
+    // Füge optimierte Größe hinzu (w=600 für mobile Ansicht)
+    return `${baseUrl}?w=600&h=400&fit=crop&auto=compress`;
+  }
+  
+  return url;
+}
+
 interface ArticleCardProps {
   a: {
     id: string;
@@ -31,13 +46,14 @@ export default function ArticleCard({ a }: ArticleCardProps) {
         {a.cover_image_url && (
           <div className="relative h-[136px] xs:h-[148px] sm:h-[160px] overflow-hidden bg-slate-700">
             <Image
-              src={a.cover_image_url}
+              src={getOptimizedImageUrl(a.cover_image_url)}
               alt={a.title}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
-              sizes="(max-width: 640px) 70vw, 300px"
+              sizes="(max-width: 480px) 279px, (max-width: 768px) 300px, (max-width: 1024px) 350px, 400px"
               priority={false}
               loading="lazy"
+              quality={75}
             />
             {/* Gradient-Overlay für besseren Icon-Kontrast */}
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20" />
